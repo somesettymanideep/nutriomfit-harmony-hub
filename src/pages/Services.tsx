@@ -1,4 +1,5 @@
 import Layout from "@/components/layout/Layout";
+import PageBanner from "@/components/ui/PageBanner";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import {
@@ -136,26 +137,13 @@ const services = [
 const Services = () => {
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-hero">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-              <Sparkles size={16} />
-              Our Programs
-            </span>
-            <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Transformative Wellness{" "}
-              <span className="text-gradient-primary">Programs</span>
-            </h1>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              Discover our range of holistic programs designed to nurture your body, 
-              calm your mind, and elevate your overall well-being. Each program is 
-              crafted with science, tradition, and personalized care.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageBanner
+        badge="Our Programs"
+        title="Transformative Wellness"
+        highlight="Programs"
+        description="Discover our range of holistic programs designed to nurture your body, calm your mind, and elevate your overall well-being. Each program is crafted with science, tradition, and personalized care."
+        icon={<Sparkles size={16} />}
+      />
 
       {/* Services */}
       {services.map((service, index) => (

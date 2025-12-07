@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Layout from "@/components/layout/Layout";
+import PageBanner from "@/components/ui/PageBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -90,26 +91,13 @@ const Contact = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-hero">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-              <Sparkles size={16} />
-              Contact Us
-            </span>
-            <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6">
-              We're Here to Guide Your{" "}
-              <span className="text-gradient-primary">Wellness Journey</span>
-            </h1>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              Have questions about our programs? Want to book a consultation? 
-              We'd love to hear from you. Reach out and let's start your 
-              transformation together.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageBanner
+        badge="Contact Us"
+        title="We're Here to Guide Your"
+        highlight="Wellness Journey"
+        description="Have questions about our programs? Want to book a consultation? We'd love to hear from you. Reach out and let's start your transformation together."
+        icon={<MessageCircle size={16} />}
+      />
 
       {/* Contact Section */}
       <section className="py-20 bg-background">
