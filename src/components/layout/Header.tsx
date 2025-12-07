@@ -53,10 +53,12 @@ const Header = () => {
               <li key={link.path}>
                 <Link
                   to={link.path}
-                  className={`font-display font-medium text-sm transition-all duration-300 hover:text-primary relative after:absolute after:bottom-[-4px] after:left-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 ${
+                  className={`font-display font-medium text-sm transition-all duration-300 relative after:absolute after:bottom-[-4px] after:left-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 ${
                     location.pathname === link.path
                       ? "text-primary after:w-full"
-                      : "text-foreground/80 after:w-0 hover:after:w-full"
+                      : isScrolled
+                        ? "text-foreground/80 hover:text-primary after:w-0 hover:after:w-full"
+                        : "text-white/90 hover:text-white after:w-0 hover:after:w-full"
                   }`}
                 >
                   {link.name}
@@ -67,14 +69,20 @@ const Header = () => {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button variant="hero" size="default" asChild>
+            <Button 
+              variant={isScrolled ? "default" : "hero"} 
+              size="default" 
+              asChild
+            >
               <Link to="/contact">Book Free Consultation</Link>
             </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-foreground"
+            className={`md:hidden p-2 transition-colors duration-300 ${
+              isScrolled ? "text-foreground" : "text-white"
+            }`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
