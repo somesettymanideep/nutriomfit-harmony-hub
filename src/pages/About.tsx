@@ -1,4 +1,5 @@
 import Layout from "@/components/layout/Layout";
+import PageBanner from "@/components/ui/PageBanner";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import {
@@ -76,26 +77,13 @@ const differentiators = [
 const About = () => {
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-hero">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-              <Sparkles size={16} />
-              About NUTRIOMFIT
-            </span>
-            <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Where Science, Tradition & Wellness{" "}
-              <span className="text-gradient-primary">Unite</span>
-            </h1>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              NUTRIOMFIT is more than a wellness brand—it's a movement towards holistic health. 
-              We blend the precision of modern science with the timeless wisdom of yoga therapy 
-              to create transformative experiences for every individual.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageBanner
+        badge="About NUTRIOMFIT"
+        title="Where Science, Tradition & Wellness"
+        highlight="Unite"
+        description="NUTRIOMFIT is more than a wellness brand—it's a movement towards holistic health. We blend the precision of modern science with the timeless wisdom of yoga therapy to create transformative experiences for every individual."
+        icon={<Sparkles size={16} />}
+      />
 
       {/* Brand Introduction */}
       <section className="py-20 bg-background">
