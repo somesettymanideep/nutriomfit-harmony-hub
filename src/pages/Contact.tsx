@@ -19,7 +19,6 @@ import {
   Clock,
   Send,
   MessageCircle,
-  Sparkles,
 } from "lucide-react";
 
 const programs = [
@@ -110,7 +109,7 @@ const Contact = () => {
                   Get in Touch
                 </h2>
                 <p className="text-muted-foreground">
-                  Ready to start your wellness journey? Reach out for program 
+                  Ready to start your wellness journey? Reach out for program
                   enrollment, free consultations, or any questions you may have.
                 </p>
               </div>
@@ -122,7 +121,9 @@ const Contact = () => {
                       <info.icon size={22} className="text-primary" />
                     </div>
                     <div>
-                      <p className="font-display font-medium text-foreground">{info.title}</p>
+                      <p className="font-display font-medium text-foreground">
+                        {info.title}
+                      </p>
                       {info.action ? (
                         <a
                           href={info.action}
@@ -146,7 +147,11 @@ const Contact = () => {
                   className="w-full gap-2"
                   asChild
                 >
-                  <a href="https://wa.me/" target="_blank" rel="noopener noreferrer">
+                  <a
+                    href="https://wa.me/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <MessageCircle size={20} />
                     Chat on WhatsApp
                   </a>
@@ -272,15 +277,39 @@ const Contact = () => {
         </div>
       </section>
 
+      {/* Google Map Section */}
+      <section className="py-12 bg-secondary/30">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="font-display text-2xl font-bold text-foreground mb-6 text-center">
+              Find Us
+            </h2>
+            <div className="rounded-2xl overflow-hidden shadow-lg border border-border">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.5965374066873!2d77.5945627!3d12.9715987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c9b44e6d%3A0xf8dfc3e8517e4fe0!2sBengaluru%2C%20Karnataka%2C%20India!5e0!3m2!1sen!2sus!4v1702000000000!5m2!1sen!2sus"
+                width="100%"
+                height="400"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="NUTRIOMFIT Location"
+                className="w-full"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Book Call CTA */}
-      <section className="py-20 bg-secondary/50">
+      <section className="py-20 bg-charcoal">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground mb-6">
             Prefer to Talk?
           </h2>
-          <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
-            Book a free consultation call with our wellness experts. We'll discuss 
-            your goals and recommend the best program for your needs.
+          <p className="text-primary-foreground/70 text-lg mb-8 max-w-2xl mx-auto">
+            Book a free consultation call with our wellness experts. We'll
+            discuss your goals and recommend the best program for your needs.
           </p>
           <Button variant="cta" size="xl">
             <Phone size={20} />
