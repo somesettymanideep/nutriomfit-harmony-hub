@@ -9,14 +9,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand Column */}
           <div className="space-y-6">
-            <img
-              src={logo}
-              alt="NUTRIOMFIT"
-              className="h-14 w-auto bg-card rounded-lg p-1"
-            />
+            <img src={logo} alt="NUTRIOMFIT" className="h-14 w-auto bg-card rounded-lg p-1" />
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
-              Where Science, Tradition & Wellness Meet. Transform your body,
-              nourish your mind, reset your health with our holistic approach.
+              Where Science, Tradition & Wellness Meet. Transform your body, nourish your mind, 
+              reset your health with our holistic approach.
             </p>
             <div className="flex gap-4">
               <a
@@ -45,15 +41,12 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-display font-semibold text-lg mb-6">
-              Quick Links
-            </h4>
+            <h4 className="font-display font-semibold text-lg mb-6">Quick Links</h4>
             <ul className="space-y-3">
               {[
                 { name: "Home", path: "/" },
                 { name: "About Us", path: "/about" },
-                { name: "Programs", path: "/programs" },
-                { name: "Services", path: "/services" },
+                { name: "Our Services", path: "/services" },
                 { name: "Contact", path: "/contact" },
               ].map((link) => (
                 <li key={link.path}>
@@ -68,21 +61,19 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Programs */}
+          {/* Services */}
           <div>
-            <h4 className="font-display font-semibold text-lg mb-6">
-              Our Programs
-            </h4>
+            <h4 className="font-display font-semibold text-lg mb-6">Our Services</h4>
             <ul className="space-y-3">
               {[
                 "Women Wellness Program",
                 "90-Day Diet Program",
                 "Kids Yoga",
-                "LSP + Juice Fasting",
+                "Gut Reset Program",
               ].map((service) => (
                 <li key={service}>
                   <Link
-                    to="/programs"
+                    to="/services"
                     className="text-primary-foreground/70 hover:text-primary transition-colors duration-300 text-sm"
                   >
                     {service}
@@ -94,59 +85,29 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h4 className="font-display font-semibold text-lg mb-6">
-              Contact Us
-            </h4>
+            <h4 className="font-display font-semibold text-lg mb-6">Contact Us</h4>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <Phone size={18} className="text-primary mt-0.5" />
-                <span className="text-primary-foreground/70 text-sm">
-                  +91 XXXXX XXXXX
-                </span>
+                <span className="text-primary-foreground/70 text-sm">+91 XXXXX XXXXX</span>
               </li>
               <li className="flex items-start gap-3">
                 <Mail size={18} className="text-primary mt-0.5" />
-                <span className="text-primary-foreground/70 text-sm">
-                  hello@nutriomfit.com
-                </span>
+                <span className="text-primary-foreground/70 text-sm">hello@nutriomfit.com</span>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-primary mt-0.5" />
-                <span className="text-primary-foreground/70 text-sm">
-                  India
-                </span>
+                <span className="text-primary-foreground/70 text-sm">India</span>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Legal Links */}
-        <div className="border-t border-primary-foreground/10 mt-12 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-primary-foreground/50 text-sm">
-              © {new Date().getFullYear()} NUTRIOMFIT. All rights reserved.
-            </p>
-            <div className="flex gap-6">
-              <Link
-                to="/terms"
-                className="text-primary-foreground/50 hover:text-primary transition-colors text-sm"
-              >
-                Terms & Conditions
-              </Link>
-              <Link
-                to="/privacy"
-                className="text-primary-foreground/50 hover:text-primary transition-colors text-sm"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                to="/disclaimer"
-                className="text-primary-foreground/50 hover:text-primary transition-colors text-sm"
-              >
-                Medical Disclaimer
-              </Link>
-            </div>
-          </div>
+        {/* Bottom Bar */}
+        <div className="border-t border-primary-foreground/10 mt-12 pt-8 text-center">
+          <p className="text-primary-foreground/50 text-sm">
+            © {new Date().getFullYear()} NUTRIOMFIT. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

@@ -7,7 +7,6 @@ import logo from "@/assets/nutriomfit-logo.jpg";
 const navLinks = [
   { name: "Home", path: "/" },
   { name: "About", path: "/about" },
-  { name: "Programs", path: "/programs" },
   { name: "Services", path: "/services" },
   { name: "Contact", path: "/contact" },
 ];
@@ -70,9 +69,9 @@ const Header = () => {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button
-              variant={isScrolled ? "default" : "hero"}
-              size="default"
+            <Button 
+              variant={isScrolled ? "default" : "hero"} 
+              size="default" 
               asChild
             >
               <Link to="/contact">Book Free Consultation</Link>
