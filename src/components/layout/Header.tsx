@@ -54,7 +54,7 @@ const Header = () => {
               <li key={link.path}>
                 <Link
                   to={link.path}
-                  className={`font-display font-medium text-sm transition-all duration-300 relative after:absolute after:bottom-[-4px] after:left-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 ${
+                  className={`font-display font-medium text-lg transition-all duration-300 relative after:absolute after:bottom-[-4px] after:left-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 ${
                     location.pathname === link.path
                       ? "text-primary after:w-full"
                       : isScrolled
