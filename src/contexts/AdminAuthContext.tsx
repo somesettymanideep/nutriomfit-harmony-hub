@@ -10,8 +10,8 @@ const AdminAuthContext = createContext<AdminAuthContextType | undefined>(undefin
 
 // Demo credentials - NOT for production use
 const DEMO_CREDENTIALS = {
-  username: "admin",
-  password: "admin123",
+  username: "admin@example.com",
+  password: "Admin@123",
 };
 
 export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
