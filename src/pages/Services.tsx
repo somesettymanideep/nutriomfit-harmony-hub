@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import BookConsultationModal from "@/components/services/BookConsultationModal";
 import VideoSlider from "@/components/services/VideoSlider";
 import { getAllServices, ServiceItem } from "@/lib/adminStore";
+import bannerImage from "@/assets/banner-services.jpg";
 import {
   Heart,
   Apple,
@@ -215,6 +216,7 @@ const Services = () => {
         highlight="Programs"
         description="Discover our range of holistic programs designed to nurture your body, calm your mind, and elevate your overall well-being. Each program is crafted with science, tradition, and personalized care."
         icon={<Sparkles size={16} />}
+        backgroundImage={bannerImage}
       />
 
       {/* Video Testimonials Slider */}

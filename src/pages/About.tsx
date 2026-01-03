@@ -3,6 +3,7 @@ import PageBanner from "@/components/ui/PageBanner";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import FounderSection from "@/components/about/FounderSection";
+import bannerImage from "@/assets/banner-about.jpg";
 import {
   Leaf,
   Brain,
@@ -84,6 +85,7 @@ const About = () => {
         highlight="Unite"
         description="NUTRIOMFIT is more than a wellness brand—it's a movement towards holistic health. We blend the precision of modern science with the timeless wisdom of yoga therapy to create transformative experiences for every individual."
         icon={<Sparkles size={16} />}
+        backgroundImage={bannerImage}
       />
 
       {/* Meet the Founder */}

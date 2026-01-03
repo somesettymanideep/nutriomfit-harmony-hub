@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
+import bannerImage from "@/assets/banner-contact.jpg";
 import {
   Phone,
   Mail,
@@ -96,6 +97,7 @@ const Contact = () => {
         highlight="Wellness Journey"
         description="Have questions about our programs? Want to book a consultation? We'd love to hear from you. Reach out and let's start your transformation together."
         icon={<MessageCircle size={16} />}
+        backgroundImage={bannerImage}
       />
 
       {/* Contact Section */}

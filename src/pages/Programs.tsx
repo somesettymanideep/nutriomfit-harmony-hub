@@ -2,6 +2,7 @@ import Layout from "@/components/layout/Layout";
 import PageBanner from "@/components/ui/PageBanner";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import bannerImage from "@/assets/banner-programs.jpg";
 import {
   Heart,
   Utensils,
@@ -144,6 +145,7 @@ const Programs = () => {
         highlight="Signature Programs"
         description="Holistic wellness programs blending therapeutic yoga, strength training, mindful nutrition & cleansing practices for lasting transformation."
         icon={<Sparkles size={16} />}
+        backgroundImage={bannerImage}
       />
 
       {/* Programs Grid */}

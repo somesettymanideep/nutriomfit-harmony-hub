@@ -7,11 +7,29 @@ interface PageBannerProps {
   highlight: string;
   description: string;
   icon?: ReactNode;
+  backgroundImage?: string;
 }
 
-const PageBanner = ({ badge, title, highlight, description, icon }: PageBannerProps) => {
+const PageBanner = ({ badge, title, highlight, description, icon, backgroundImage }: PageBannerProps) => {
   return (
-    <section className="relative pt-32 pb-24 bg-gradient-hero overflow-hidden">
+    <section className="relative pt-32 pb-24 overflow-hidden">
+      {/* Background Image */}
+      {backgroundImage && (
+        <div className="absolute inset-0">
+          <img 
+            src={backgroundImage} 
+            alt="" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/80 to-background" />
+        </div>
+      )}
+      
+      {/* Default gradient background when no image */}
+      {!backgroundImage && (
+        <div className="absolute inset-0 bg-gradient-hero" />
+      )}
+      
       {/* Background decorative elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse" />
