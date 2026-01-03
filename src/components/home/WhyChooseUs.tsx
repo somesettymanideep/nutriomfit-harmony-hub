@@ -31,7 +31,7 @@ const reasons = [
   },
   {
     icon: Scale,
-    title: "350+ kg Community Weight Loss",
+    title: "400+ kg Community Weight Loss",
     description: "Proven track record with our community achieving remarkable, sustainable weight loss results.",
   },
   {

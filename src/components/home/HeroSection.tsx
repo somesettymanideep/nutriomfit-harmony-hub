@@ -73,16 +73,16 @@ const HeroSection = () => {
           {/* Stats */}
           <div className="flex flex-wrap gap-8 mt-12 pt-8 border-t border-primary-foreground/20 animate-fade-up animation-delay-500">
             <div>
-              <p className="font-display text-3xl font-bold text-primary">350+</p>
-              <p className="text-primary-foreground/70 text-sm">kg Community Weight Loss</p>
+              <p className="font-display text-3xl font-bold text-primary">400+ </p>
+              <p className="text-primary-foreground/70 text-sm">kgs collective weight loss</p>
             </div>
             <div>
-              <p className="font-display text-3xl font-bold text-primary">500+</p>
-              <p className="text-primary-foreground/70 text-sm">Happy Members</p>
+              <p className="font-display text-3xl font-bold text-primary">740+</p>
+              <p className="text-primary-foreground/70 text-sm">Happy Clients</p>
             </div>
             <div>
-              <p className="font-display text-3xl font-bold text-primary">4+</p>
-              <p className="text-primary-foreground/70 text-sm">Wellness Programs</p>
+              <p className="font-display text-3xl font-bold text-primary">5+ </p>
+              <p className="text-primary-foreground/70 text-sm">Countries</p>
             </div>
           </div>
         </div>

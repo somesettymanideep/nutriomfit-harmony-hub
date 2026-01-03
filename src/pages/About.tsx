@@ -118,20 +118,20 @@ const About = () => {
             {/* Stats */}
             <div className="grid grid-cols-2 gap-6">
               <div className="p-8 bg-card rounded-2xl border border-border text-center shadow-card">
-                <div className="font-display text-4xl font-bold text-primary mb-2">350+</div>
-                <p className="text-muted-foreground">kg Community Weight Loss</p>
+                <div className="font-display text-4xl font-bold text-primary mb-2">400+</div>
+                <p className="text-muted-foreground"> kgs collective weight loss</p>
               </div>
               <div className="p-8 bg-card rounded-2xl border border-border text-center shadow-card">
-                <div className="font-display text-4xl font-bold text-primary mb-2">500+</div>
-                <p className="text-muted-foreground">Happy Members</p>
+                <div className="font-display text-4xl font-bold text-primary mb-2">740+</div>
+                <p className="text-muted-foreground">Happy Clients</p>
               </div>
               <div className="p-8 bg-card rounded-2xl border border-border text-center shadow-card">
-                <div className="font-display text-4xl font-bold text-primary mb-2">4+</div>
-                <p className="text-muted-foreground">Wellness Programs</p>
+                <div className="font-display text-4xl font-bold text-primary mb-2">7+</div>
+                <p className="text-muted-foreground">years of experience</p>
               </div>
               <div className="p-8 bg-card rounded-2xl border border-border text-center shadow-card">
-                <div className="font-display text-4xl font-bold text-primary mb-2">100%</div>
-                <p className="text-muted-foreground">Personalized Approach</p>
+                <div className="font-display text-4xl font-bold text-primary mb-2">5+</div>
+                <p className="text-muted-foreground">countries</p>
               </div>
             </div>
           </div>

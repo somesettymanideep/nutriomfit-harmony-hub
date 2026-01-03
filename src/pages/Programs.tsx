@@ -59,7 +59,7 @@ const programs = [
       "21 days post-program maintenance",
     ],
     benefits: [
-      "350+ kg community weight loss achieved",
+      "400+  kg community weight loss achieved",
       "No extreme restrictions",
       "Balanced macronutrient intake",
       "Long-term lifestyle transformation",

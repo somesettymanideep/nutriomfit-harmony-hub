@@ -75,7 +75,7 @@ const defaultServicesData = [
     ],
     whoIsFor: "Anyone seeking lasting weight management through science-based nutrition, not crash diets. Perfect for those ready to commit to real change.",
     duration: "111 days (90-day program + 21-day maintenance)",
-    stats: "350+ kg community weight loss achieved",
+    stats: "400+ kg community weight loss achieved",
     color: "from-primary/20 to-emerald-500/20",
     iconBg: "bg-primary/10",
     iconColor: "text-primary",
