@@ -112,6 +112,45 @@ const Services = () => {
                   )}
                 </div>
 
+                {/* What's Included & Benefits */}
+                <div className="grid md:grid-cols-2 gap-6 mb-8">
+                  {/* What's Included */}
+                  {service.whatsIncluded && service.whatsIncluded.length > 0 && (
+                    <div className="p-6 bg-card rounded-xl border border-border shadow-card">
+                      <h3 className="font-display font-semibold text-lg text-foreground mb-4 flex items-center gap-2">
+                        <CheckCircle2 className="text-primary" size={20} />
+                        What's Included
+                      </h3>
+                      <ul className="space-y-3">
+                        {service.whatsIncluded.map((item, idx) => (
+                          <li key={idx} className="flex items-start gap-3">
+                            <CheckCircle2 className="text-primary mt-0.5 flex-shrink-0" size={16} />
+                            <span className="text-muted-foreground text-sm">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Benefits */}
+                  {service.benefits && service.benefits.length > 0 && (
+                    <div className="p-6 bg-card rounded-xl border border-border shadow-card">
+                      <h3 className="font-display font-semibold text-lg text-foreground mb-4 flex items-center gap-2">
+                        <Sparkles className="text-primary" size={20} />
+                        Benefits
+                      </h3>
+                      <ul className="space-y-3">
+                        {service.benefits.map((benefit, idx) => (
+                          <li key={idx} className="flex items-start gap-3">
+                            <Sparkles className="text-primary mt-0.5 flex-shrink-0" size={16} />
+                            <span className="text-muted-foreground text-sm">{benefit}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
                 {/* Available Slots */}
                 <div className="p-6 bg-card rounded-xl border border-border shadow-card mb-8">
                   <h3 className="font-display font-semibold text-lg text-foreground mb-4 flex items-center gap-2">

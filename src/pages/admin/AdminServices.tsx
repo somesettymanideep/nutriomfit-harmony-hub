@@ -41,6 +41,8 @@ const emptyService: Omit<Service, "id"> = {
   title: "",
   shortDescription: "",
   detailedProcedure: "",
+  whatsIncluded: [],
+  benefits: [],
   consultationFee: 0,
   consultationDuration: "30 minutes",
   timeSlots: [
@@ -175,7 +177,27 @@ const AdminServices = () => {
                       value={formData.detailedProcedure}
                       onChange={(e) => setFormData({ ...formData, detailedProcedure: e.target.value })}
                       placeholder="<h3>About This Consultation</h3><p>Details...</p>"
-                      rows={6}
+                      rows={4}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="whatsIncluded">What's Included (one item per line)</Label>
+                    <Textarea
+                      id="whatsIncluded"
+                      value={formData.whatsIncluded.join("\n")}
+                      onChange={(e) => setFormData({ ...formData, whatsIncluded: e.target.value.split("\n").filter(Boolean) })}
+                      placeholder="Personal health assessment&#10;Customized yoga sessions&#10;Weekly check-ins"
+                      rows={4}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="benefits">Benefits (one item per line)</Label>
+                    <Textarea
+                      id="benefits"
+                      value={formData.benefits.join("\n")}
+                      onChange={(e) => setFormData({ ...formData, benefits: e.target.value.split("\n").filter(Boolean) })}
+                      placeholder="Improved energy levels&#10;Better stress management&#10;Enhanced flexibility"
+                      rows={4}
                     />
                   </div>
                 </div>
