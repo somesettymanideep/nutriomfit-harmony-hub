@@ -4,6 +4,7 @@ import Layout from "@/components/layout/Layout";
 import PageBanner from "@/components/ui/PageBanner";
 import { Button } from "@/components/ui/button";
 import BookConsultationModal from "@/components/services/BookConsultationModal";
+import VideoSlider from "@/components/services/VideoSlider";
 import { getAllServices, ServiceItem } from "@/lib/adminStore";
 import {
   Heart,
@@ -215,6 +216,9 @@ const Services = () => {
         description="Discover our range of holistic programs designed to nurture your body, calm your mind, and elevate your overall well-being. Each program is crafted with science, tradition, and personalized care."
         icon={<Sparkles size={16} />}
       />
+
+      {/* Video Testimonials Slider */}
+      <VideoSlider />
 
       {/* Services */}
       {services.map((service, index) => (
