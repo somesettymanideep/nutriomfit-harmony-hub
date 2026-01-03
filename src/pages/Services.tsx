@@ -1,7 +1,8 @@
+import { useState } from "react";
 import Layout from "@/components/layout/Layout";
 import PageBanner from "@/components/ui/PageBanner";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import BookConsultationModal from "@/components/services/BookConsultationModal";
 import {
   Heart,
   Apple,
@@ -135,6 +136,14 @@ const services = [
 ];
 
 const Services = () => {
+  const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<{ id: string; name: string } | null>(null);
+
+  const handleBookConsultation = (serviceId: string, serviceName: string) => {
+    setSelectedService({ id: serviceId, name: serviceName });
+    setBookingModalOpen(true);
+  };
+
   return (
     <Layout>
       <PageBanner
@@ -233,8 +242,13 @@ const Services = () => {
                     <Calendar size={20} className="text-primary" />
                     <span className="font-display font-semibold text-foreground">Get Started</span>
                   </div>
-                  <Button variant="default" size="sm" className="w-full" asChild>
-                    <Link to="/contact">Book Consultation</Link>
+                  <Button 
+                    variant="default" 
+                    size="sm" 
+                    className="w-full"
+                    onClick={() => handleBookConsultation(service.id, service.title)}
+                  >
+                    Book Consultation
                   </Button>
                 </div>
               </div>
@@ -281,17 +295,26 @@ const Services = () => {
             <Button
               variant="secondary"
               size="xl"
-              className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold shadow-lg"
-              asChild
+              className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold shadow-lg group"
+              onClick={() => {
+                setSelectedService(null);
+                setBookingModalOpen(true);
+              }}
             >
-              <Link to="/contact" className="group">
-                Book Free Consultation
-                <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
-              </Link>
+              Book Free Consultation
+              <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
         </div>
       </section>
+
+      {/* Booking Modal */}
+      <BookConsultationModal
+        open={bookingModalOpen}
+        onOpenChange={setBookingModalOpen}
+        serviceName={selectedService?.name}
+        serviceId={selectedService?.id}
+      />
     </Layout>
   );
 };
