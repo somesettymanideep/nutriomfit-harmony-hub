@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -42,7 +42,7 @@ const iconMap = {
 };
 
 const AdminServices = () => {
-  const [services, setServices] = useState<ServiceItem[]>(getAllServices());
+  const [services, setServices] = useState<ServiceItem[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingService, setEditingService] = useState<ServiceItem | null>(null);
   const [formData, setFormData] = useState<{
@@ -65,6 +65,21 @@ const AdminServices = () => {
     iconType: "heart",
   });
 
+  // Load services on mount and when localStorage changes
+  useEffect(() => {
+    refreshServices();
+    
+    // Listen for storage events from other tabs
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'allServices') {
+        refreshServices();
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   const resetForm = () => {
     setFormData({
       title: "",
@@ -80,7 +95,8 @@ const AdminServices = () => {
   };
 
   const refreshServices = () => {
-    setServices(getAllServices());
+    const freshServices = getAllServices();
+    setServices([...freshServices]); // Create new array to trigger re-render
   };
 
   const handleSubmit = () => {

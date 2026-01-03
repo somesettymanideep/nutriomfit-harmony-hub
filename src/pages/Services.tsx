@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
 import PageBanner from "@/components/ui/PageBanner";
 import { Button } from "@/components/ui/button";
 import BookConsultationModal from "@/components/services/BookConsultationModal";
+import { getAllServices, ServiceItem } from "@/lib/adminStore";
 import {
   Heart,
   Apple,
@@ -18,7 +19,8 @@ import {
   Trophy,
 } from "lucide-react";
 
-const services = [
+// Fallback default services for when admin hasn't set any
+const defaultServicesData = [
   {
     id: "women-wellness",
     icon: Heart,
@@ -46,6 +48,8 @@ const services = [
     color: "from-pink-500/20 to-rose-500/20",
     iconBg: "bg-rose-500/10",
     iconColor: "text-rose-500",
+    important: "",
+    stats: "",
   },
   {
     id: "diet-program",
@@ -75,6 +79,7 @@ const services = [
     color: "from-primary/20 to-emerald-500/20",
     iconBg: "bg-primary/10",
     iconColor: "text-primary",
+    important: "",
   },
   {
     id: "kids-yoga",
@@ -103,6 +108,8 @@ const services = [
     color: "from-amber-500/20 to-orange-500/20",
     iconBg: "bg-amber-500/10",
     iconColor: "text-amber-500",
+    important: "",
+    stats: "",
   },
   {
     id: "gut-reset",
@@ -132,12 +139,65 @@ const services = [
     color: "from-blue-500/20 to-cyan-500/20",
     iconBg: "bg-blue-500/10",
     iconColor: "text-blue-500",
+    stats: "",
   },
 ];
+
+const iconMap = {
+  heart: Heart,
+  apple: Apple,
+  baby: Baby,
+  droplets: Droplets,
+} as const;
+
+const colorMap: Record<string, { color: string; iconBg: string; iconColor: string }> = {
+  heart: { color: "from-pink-500/20 to-rose-500/20", iconBg: "bg-rose-500/10", iconColor: "text-rose-500" },
+  apple: { color: "from-primary/20 to-emerald-500/20", iconBg: "bg-primary/10", iconColor: "text-primary" },
+  baby: { color: "from-amber-500/20 to-orange-500/20", iconBg: "bg-amber-500/10", iconColor: "text-amber-500" },
+  droplets: { color: "from-blue-500/20 to-cyan-500/20", iconBg: "bg-blue-500/10", iconColor: "text-blue-500" },
+};
+
+type IconType = keyof typeof iconMap;
+
+// Merge admin data with display defaults
+const mergeServicesWithDefaults = (adminServices: ServiceItem[]) => {
+  return adminServices.map((adminService) => {
+    const defaultService = defaultServicesData.find(d => d.id === adminService.id);
+    const iconType = adminService.iconType as IconType;
+    const colors = colorMap[iconType] || colorMap.heart;
+    const Icon = iconMap[iconType] || Heart;
+    
+    return {
+      id: adminService.id,
+      icon: Icon,
+      title: adminService.title,
+      subtitle: adminService.subtitle || defaultService?.subtitle || "",
+      description: adminService.description || defaultService?.description || "",
+      features: adminService.features?.length > 0 ? adminService.features : (defaultService?.features || []),
+      benefits: adminService.benefits?.length > 0 ? adminService.benefits : (defaultService?.benefits || []),
+      whoIsFor: adminService.whoIsFor || defaultService?.whoIsFor || "",
+      duration: adminService.duration || defaultService?.duration || "",
+      important: defaultService?.important || "",
+      stats: defaultService?.stats || "",
+      ...colors,
+    };
+  });
+};
 
 const Services = () => {
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<{ id: string; name: string } | null>(null);
+  const [services, setServices] = useState(() => mergeServicesWithDefaults(getAllServices()));
+
+  // Refresh services when the component mounts or becomes visible
+  useEffect(() => {
+    const handleFocus = () => {
+      setServices(mergeServicesWithDefaults(getAllServices()));
+    };
+    
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, []);
 
   const handleBookConsultation = (serviceId: string, serviceName: string) => {
     setSelectedService({ id: serviceId, name: serviceName });
