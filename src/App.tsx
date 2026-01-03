@@ -8,6 +8,7 @@ import About from "./pages/About";
 import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
 import Programs from "./pages/Programs";
+import Schedule from "./pages/Schedule";
 import Contact from "./pages/Contact";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
@@ -18,6 +19,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminServices from "./pages/admin/AdminServices";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminBookings from "./pages/admin/AdminBookings";
+import AdminSchedule from "./pages/admin/AdminSchedule";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +35,7 @@ const App = () => (
           <Route path="/services" element={<Services />} />
           <Route path="/services/:serviceId" element={<ServiceDetail />} />
           <Route path="/programs" element={<Programs />} />
+          <Route path="/schedule" element={<Schedule />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
@@ -44,6 +47,7 @@ const App = () => (
             <Route path="services" element={<AdminServices />} />
             <Route path="settings" element={<AdminSettings />} />
             <Route path="bookings" element={<AdminBookings />} />
+            <Route path="schedule" element={<AdminSchedule />} />
           </Route>
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

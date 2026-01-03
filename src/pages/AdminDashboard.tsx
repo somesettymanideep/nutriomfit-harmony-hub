@@ -38,8 +38,9 @@ const AdminDashboard = () => {
   const navItems = [
     { path: "/admin/dashboard", icon: LayoutDashboard, label: "Overview" },
     { path: "/admin/dashboard/services", icon: FileText, label: "Services" },
+    { path: "/admin/dashboard/schedule", icon: Calendar, label: "Schedule" },
     { path: "/admin/dashboard/settings", icon: Settings, label: "Settings" },
-    { path: "/admin/dashboard/bookings", icon: Calendar, label: "Bookings" },
+    { path: "/admin/dashboard/bookings", icon: Users, label: "Bookings" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -191,7 +192,7 @@ const AdminDashboard = () => {
               </div>
 
               {/* Quick Links */}
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <Link
                   to="/admin/dashboard/services"
                   className="bg-card border border-border rounded-xl p-6 hover:shadow-md transition-shadow"
@@ -199,6 +200,15 @@ const AdminDashboard = () => {
                   <FileText className="w-8 h-8 text-primary mb-3" />
                   <h3 className="font-display font-semibold text-foreground mb-1">Manage Services</h3>
                   <p className="text-sm text-muted-foreground">Add, edit, or remove services</p>
+                </Link>
+
+                <Link
+                  to="/admin/dashboard/schedule"
+                  className="bg-card border border-border rounded-xl p-6 hover:shadow-md transition-shadow"
+                >
+                  <Calendar className="w-8 h-8 text-primary mb-3" />
+                  <h3 className="font-display font-semibold text-foreground mb-1">Schedule Calendar</h3>
+                  <p className="text-sm text-muted-foreground">Manage monthly workout schedule</p>
                 </Link>
 
                 <Link
@@ -214,7 +224,7 @@ const AdminDashboard = () => {
                   to="/admin/dashboard/bookings"
                   className="bg-card border border-border rounded-xl p-6 hover:shadow-md transition-shadow"
                 >
-                  <Calendar className="w-8 h-8 text-primary mb-3" />
+                  <Users className="w-8 h-8 text-primary mb-3" />
                   <h3 className="font-display font-semibold text-foreground mb-1">View Bookings</h3>
                   <p className="text-sm text-muted-foreground">
                     {pendingBookings > 0 ? `${pendingBookings} pending bookings` : 'No pending bookings'}
