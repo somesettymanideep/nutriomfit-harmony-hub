@@ -2,6 +2,7 @@ import Layout from "@/components/layout/Layout";
 import PageBanner from "@/components/ui/PageBanner";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import FounderSection from "@/components/about/FounderSection";
 import {
   Leaf,
   Brain,
@@ -85,8 +86,11 @@ const About = () => {
         icon={<Sparkles size={16} />}
       />
 
+      {/* Meet the Founder */}
+      <FounderSection />
+
       {/* Brand Introduction */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-secondary/50">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>

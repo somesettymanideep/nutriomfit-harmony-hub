@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import PageBanner from "@/components/ui/PageBanner";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import {
   AlertCircle,
   Calendar,
   Trophy,
+  ExternalLink,
 } from "lucide-react";
 
 // Fallback default services for when admin hasn't set any
@@ -302,14 +304,27 @@ const Services = () => {
                     <Calendar size={20} className="text-primary" />
                     <span className="font-display font-semibold text-foreground">Get Started</span>
                   </div>
-                  <Button 
-                    variant="default" 
-                    size="sm" 
-                    className="w-full"
-                    onClick={() => handleBookConsultation(service.id, service.title)}
-                  >
-                    Book Consultation
-                  </Button>
+                  <div className="flex flex-col gap-2">
+                    <Button 
+                      variant="default" 
+                      size="sm" 
+                      className="w-full"
+                      onClick={() => handleBookConsultation(service.id, service.title)}
+                    >
+                      Book Consultation
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full gap-2"
+                      asChild
+                    >
+                      <Link to={`/services/${service.id}`}>
+                        View Details
+                        <ExternalLink size={14} />
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </div>
 
