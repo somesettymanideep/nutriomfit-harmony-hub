@@ -80,7 +80,7 @@ const AdminLogin = () => {
             </Button>
           </form>
           <p className="text-center text-sm text-muted-foreground mt-4">
-            Demo: username: <code className="bg-muted px-1 rounded">admin</code> / password: <code className="bg-muted px-1 rounded">admin123</code>
+            Demo: <code className="bg-muted px-1 rounded">admin@example.com</code> / <code className="bg-muted px-1 rounded">Admin@123</code>
           </p>
         </CardContent>
       </Card>
