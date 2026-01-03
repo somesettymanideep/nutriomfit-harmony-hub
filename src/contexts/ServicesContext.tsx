@@ -10,6 +10,8 @@ export interface Service {
   title: string;
   shortDescription: string;
   detailedProcedure: string;
+  whatsIncluded: string[];
+  benefits: string[];
   consultationFee: number;
   consultationDuration: string;
   timeSlots: TimeSlot[];
@@ -40,16 +42,21 @@ const defaultServices: Service[] = [
     title: "Women Wellness Program",
     shortDescription: "Holistic Health for Modern Women - A comprehensive wellness program designed specifically for women.",
     detailedProcedure: `<h3>About This Consultation</h3>
-<p>This consultation is designed to understand your health goals, current lifestyle, and any specific concerns you may have. Our expert will guide you through our Women Wellness Program and help create a personalized plan.</p>
-
-<h3>What We'll Discuss</h3>
-<ul>
-<li>Your current health status and goals</li>
-<li>Therapeutic yoga approaches (IAYT certified)</li>
-<li>Progressive strength training methods</li>
-<li>Hormonal balance strategies</li>
-<li>Personalized program recommendations</li>
-</ul>`,
+<p>This consultation is designed to understand your health goals, current lifestyle, and any specific concerns you may have. Our expert will guide you through our Women Wellness Program and help create a personalized plan.</p>`,
+    whatsIncluded: [
+      "Personal health assessment",
+      "Customized yoga sessions (IAYT certified)",
+      "Progressive strength training plan",
+      "Weekly check-ins with wellness coach",
+      "Access to exclusive wellness resources"
+    ],
+    benefits: [
+      "Improved hormonal balance",
+      "Increased energy and vitality",
+      "Better stress management",
+      "Enhanced flexibility and strength",
+      "Holistic mind-body wellness"
+    ],
     consultationFee: 999,
     consultationDuration: "45 minutes",
     timeSlots: [
@@ -70,16 +77,21 @@ const defaultServices: Service[] = [
     title: "90-Day Diet Program",
     shortDescription: "The 111-Day Transformation Model using the innovative Cognitive Plating Method.",
     detailedProcedure: `<h3>About This Consultation</h3>
-<p>Understand how our science-based nutrition program can transform your relationship with food. Learn about the Cognitive Plating Method and the 4 structured cycles.</p>
-
-<h3>What We'll Discuss</h3>
-<ul>
-<li>Your dietary history and challenges</li>
-<li>The 111-day transformation model</li>
-<li>Cognitive Plating Method explained</li>
-<li>Expected outcomes and milestones</li>
-<li>Program customization options</li>
-</ul>`,
+<p>Understand how our science-based nutrition program can transform your relationship with food. Learn about the Cognitive Plating Method and the 4 structured cycles.</p>`,
+    whatsIncluded: [
+      "Comprehensive diet assessment",
+      "Personalized meal plans",
+      "Weekly nutrition coaching calls",
+      "Recipe database access",
+      "Progress tracking tools"
+    ],
+    benefits: [
+      "Sustainable weight management",
+      "Improved metabolism",
+      "Better relationship with food",
+      "Increased energy levels",
+      "Long-term healthy habits"
+    ],
     consultationFee: 1499,
     consultationDuration: "60 minutes",
     timeSlots: [
@@ -100,16 +112,21 @@ const defaultServices: Service[] = [
     title: "Kids Yoga Program",
     shortDescription: "Ages 7-14: Learn, Play, Grow - Fun, educational yoga for children.",
     detailedProcedure: `<h3>About This Consultation</h3>
-<p>A consultation for parents to understand how our Kids Yoga program can benefit their children. Learn about our anatomy-based approach and reward system.</p>
-
-<h3>What We'll Discuss</h3>
-<ul>
-<li>Your child's current activity level</li>
-<li>Anatomy-based yoga learning approach</li>
-<li>Practice Merit Points system</li>
-<li>Class schedules and formats</li>
-<li>Safety and supervision protocols</li>
-</ul>`,
+<p>A consultation for parents to understand how our Kids Yoga program can benefit their children. Learn about our anatomy-based approach and reward system.</p>`,
+    whatsIncluded: [
+      "Age-appropriate yoga sessions",
+      "Anatomy-based learning modules",
+      "Practice Merit Points rewards",
+      "Parent progress reports",
+      "Fun yoga games and activities"
+    ],
+    benefits: [
+      "Improved focus and concentration",
+      "Better posture and flexibility",
+      "Enhanced self-confidence",
+      "Healthy physical activity habits",
+      "Stress and anxiety reduction"
+    ],
     consultationFee: 499,
     consultationDuration: "30 minutes",
     timeSlots: [
@@ -130,18 +147,21 @@ const defaultServices: Service[] = [
     title: "LSP + Juice Fasting",
     shortDescription: "4-Day Gut Reset Program - A supervised gut cleansing protocol.",
     detailedProcedure: `<h3>About This Consultation</h3>
-<p>This is a <strong>mandatory pre-program consultation</strong> to assess your eligibility for the Gut Reset program. Medical review is required before participation.</p>
-
-<h3>What We'll Discuss</h3>
-<ul>
-<li>Your medical history and current health</li>
-<li>Eligibility assessment</li>
-<li>The LSP cleansing process explained</li>
-<li>Juice fasting protocol details</li>
-<li>Post-program care and diet</li>
-</ul>
-
-<p class="warning"><strong>⚠️ Important:</strong> This program is not suitable for everyone. Medical clearance is mandatory.</p>`,
+<p>This is a <strong>mandatory pre-program consultation</strong> to assess your eligibility for the Gut Reset program. Medical review is required before participation.</p>`,
+    whatsIncluded: [
+      "Medical eligibility assessment",
+      "Supervised cleansing protocol",
+      "Premium juice cleanse kit",
+      "Daily check-ins during program",
+      "Post-program diet guidance"
+    ],
+    benefits: [
+      "Complete digestive reset",
+      "Reduced bloating and discomfort",
+      "Improved nutrient absorption",
+      "Mental clarity and focus",
+      "Jump-start to healthier eating"
+    ],
     consultationFee: 799,
     consultationDuration: "45 minutes",
     timeSlots: [
