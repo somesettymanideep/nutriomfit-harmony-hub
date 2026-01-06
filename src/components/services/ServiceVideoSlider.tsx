@@ -14,8 +14,9 @@ const ServiceVideoSlider = ({ serviceId, serviceTitle }: ServiceVideoSliderProps
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const loadVideos = () => {
-      setVideos(getServiceVideos(serviceId));
+    const loadVideos = async () => {
+      const vids = await getServiceVideos(serviceId);
+      setVideos(vids);
     };
     loadVideos();
 
@@ -68,7 +69,7 @@ const ServiceVideoSlider = ({ serviceId, serviceTitle }: ServiceVideoSliderProps
             <>
               <video
                 ref={videoRef}
-                src={currentVideo.videoUrl}
+                src={currentVideo.videoData}
                 className="w-full h-full object-cover"
                 controls
                 autoPlay

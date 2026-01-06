@@ -1,82 +1,125 @@
-// Service video storage management
-
 export interface ServiceVideo {
   id: string;
   serviceId: string;
   title: string;
-  videoUrl: string; // base64 data URL for uploaded videos
+  videoData: string;
   thumbnail: string;
   duration: string;
   uploadedAt: string;
 }
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const DB_NAME = 'serviceVideosDB';
+const DB_VERSION = 1;
+const STORE_NAME = 'videos';
 
-// Get all videos for a specific service
-export const getServiceVideos = (serviceId: string): ServiceVideo[] => {
-  const stored = localStorage.getItem('serviceVideos');
-  const allVideos: ServiceVideo[] = stored ? JSON.parse(stored) : [];
-  return allVideos.filter(v => v.serviceId === serviceId);
+// Initialize IndexedDB
+const openDB = (): Promise<IDBDatabase> => {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve(request.result);
+    
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        const store = db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+        store.createIndex('serviceId', 'serviceId', { unique: false });
+      }
+    };
+  });
 };
 
 // Get all videos
-export const getAllServiceVideos = (): ServiceVideo[] => {
-  const stored = localStorage.getItem('serviceVideos');
-  return stored ? JSON.parse(stored) : [];
+export const getAllServiceVideos = async (): Promise<ServiceVideo[]> => {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(STORE_NAME, 'readonly');
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.getAll();
+      
+      request.onsuccess = () => resolve(request.result || []);
+      request.onerror = () => reject(request.error);
+    });
+  } catch (error) {
+    console.error('Error getting videos:', error);
+    return [];
+  }
 };
 
-// Add a video to a service
-export const addServiceVideo = (
-  serviceId: string,
-  title: string,
-  videoData: string,
+// Get videos for a specific service
+export const getServiceVideos = async (serviceId: string): Promise<ServiceVideo[]> => {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(STORE_NAME, 'readonly');
+      const store = transaction.objectStore(STORE_NAME);
+      const index = store.index('serviceId');
+      const request = index.getAll(serviceId);
+      
+      request.onsuccess = () => resolve(request.result || []);
+      request.onerror = () => reject(request.error);
+    });
+  } catch (error) {
+    console.error('Error getting service videos:', error);
+    return [];
+  }
+};
+
+// Add a new video
+export const addServiceVideo = async (
+  serviceId: string, 
+  title: string, 
+  videoData: string, 
   thumbnail: string,
   duration: string
-): ServiceVideo => {
-  const allVideos = getAllServiceVideos();
-  const newVideo: ServiceVideo = {
-    id: `video-${Date.now()}`,
+): Promise<ServiceVideo> => {
+  const video: ServiceVideo = {
+    id: crypto.randomUUID(),
     serviceId,
     title,
-    videoUrl: videoData,
+    videoData,
     thumbnail,
     duration,
-    uploadedAt: new Date().toISOString(),
+    uploadedAt: new Date().toISOString()
   };
-  allVideos.push(newVideo);
-  localStorage.setItem('serviceVideos', JSON.stringify(allVideos));
-  return newVideo;
+  
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.add(video);
+    
+    request.onsuccess = () => resolve(video);
+    request.onerror = () => reject(request.error);
+  });
 };
 
 // Delete a video
-export const deleteServiceVideo = (videoId: string): void => {
-  const allVideos = getAllServiceVideos();
-  const filtered = allVideos.filter(v => v.id !== videoId);
-  localStorage.setItem('serviceVideos', JSON.stringify(filtered));
+export const deleteServiceVideo = async (videoId: string): Promise<void> => {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.delete(videoId);
+    
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(request.error);
+  });
 };
 
-// Update video details
-export const updateServiceVideo = (videoId: string, data: Partial<ServiceVideo>): void => {
-  const allVideos = getAllServiceVideos();
-  const updated = allVideos.map(v => v.id === videoId ? { ...v, ...data } : v);
-  localStorage.setItem('serviceVideos', JSON.stringify(updated));
-};
+// Validate video file (10MB limit)
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const ALLOWED_TYPES = ['video/mp4', 'video/webm', 'video/ogg'];
 
-// Validate file size (5MB limit)
 export const validateVideoFile = (file: File): { valid: boolean; error?: string } => {
-  if (file.size > MAX_FILE_SIZE) {
-    return { 
-      valid: false, 
-      error: `File size exceeds 5MB limit. Your file is ${(file.size / (1024 * 1024)).toFixed(2)}MB` 
-    };
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    return { valid: false, error: 'Invalid file type. Please upload MP4, WebM, or OGG.' };
   }
   
-  const validTypes = ['video/mp4', 'video/webm', 'video/ogg'];
-  if (!validTypes.includes(file.type)) {
-    return { 
-      valid: false, 
-      error: 'Invalid file type. Please upload MP4, WebM, or OGG video.' 
-    };
+  if (file.size > MAX_FILE_SIZE) {
+    return { valid: false, error: `File size exceeds 10MB limit. Current size: ${(file.size / (1024 * 1024)).toFixed(2)}MB` };
   }
   
   return { valid: true };
@@ -88,26 +131,26 @@ export const fileToBase64 = (file: File): Promise<string> => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result as string);
-    reader.onerror = error => reject(error);
+    reader.onerror = (error) => reject(error);
   });
 };
 
-// Generate video thumbnail (first frame)
-export const generateVideoThumbnail = (videoUrl: string): Promise<string> => {
+// Generate video thumbnail
+export const generateVideoThumbnail = (videoData: string): Promise<string> => {
   return new Promise((resolve) => {
     const video = document.createElement('video');
-    video.src = videoUrl;
+    video.src = videoData;
     video.crossOrigin = 'anonymous';
     video.muted = true;
     
     video.onloadeddata = () => {
-      video.currentTime = 0;
+      video.currentTime = 1;
     };
     
     video.onseeked = () => {
       const canvas = document.createElement('canvas');
-      canvas.width = 400;
-      canvas.height = 225;
+      canvas.width = 320;
+      canvas.height = 180;
       const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -117,24 +160,22 @@ export const generateVideoThumbnail = (videoUrl: string): Promise<string> => {
       }
     };
     
-    video.onerror = () => {
-      resolve('');
-    };
+    video.onerror = () => resolve('');
   });
 };
 
-// Get video duration formatted
-export const getVideoDuration = (videoUrl: string): Promise<string> => {
+// Get video duration
+export const getVideoDuration = (videoData: string): Promise<string> => {
   return new Promise((resolve) => {
     const video = document.createElement('video');
-    video.src = videoUrl;
+    video.src = videoData;
+    
     video.onloadedmetadata = () => {
       const minutes = Math.floor(video.duration / 60);
       const seconds = Math.floor(video.duration % 60);
       resolve(`${minutes}:${seconds.toString().padStart(2, '0')}`);
     };
-    video.onerror = () => {
-      resolve('0:00');
-    };
+    
+    video.onerror = () => resolve('0:00');
   });
 };
