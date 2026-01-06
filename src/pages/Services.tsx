@@ -5,6 +5,7 @@ import PageBanner from "@/components/ui/PageBanner";
 import { Button } from "@/components/ui/button";
 import BookConsultationModal from "@/components/services/BookConsultationModal";
 import VideoSlider from "@/components/services/VideoSlider";
+import ServiceVideoSlider from "@/components/services/ServiceVideoSlider";
 import { getAllServices, ServiceItem } from "@/lib/adminStore";
 import bannerImage from "@/assets/banner-services.jpg";
 import {
@@ -351,6 +352,11 @@ const Services = () => {
                   <Trophy size={18} className="text-primary" />
                   <span className="text-primary font-medium">{service.stats}</span>
                 </div>
+              )}
+
+              {/* Service Video Slider - only for main 4 services */}
+              {['women-wellness', 'diet-program', 'kids-yoga', 'gut-reset'].includes(service.id) && (
+                <ServiceVideoSlider serviceId={service.id} serviceTitle={service.title} />
               )}
             </div>
           </div>
