@@ -20,6 +20,7 @@ import AdminServices from "./pages/admin/AdminServices";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminBookings from "./pages/admin/AdminBookings";
 import AdminSchedule from "./pages/admin/AdminSchedule";
+import AdminServiceVideos from "./pages/admin/AdminServiceVideos";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ const App = () => (
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />}>
             <Route path="services" element={<AdminServices />} />
+            <Route path="videos" element={<AdminServiceVideos />} />
             <Route path="settings" element={<AdminSettings />} />
             <Route path="bookings" element={<AdminBookings />} />
             <Route path="schedule" element={<AdminSchedule />} />
