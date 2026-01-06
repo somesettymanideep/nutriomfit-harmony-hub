@@ -47,8 +47,9 @@ const AdminServiceVideos = () => {
     refreshData();
   }, []);
 
-  const refreshData = () => {
-    setVideos(getAllServiceVideos());
+  const refreshData = async () => {
+    const allVideos = await getAllServiceVideos();
+    setVideos(allVideos);
     setServices(getAllServices());
   };
 
@@ -85,7 +86,7 @@ const AdminServiceVideos = () => {
       ]);
 
       // Save video
-      addServiceVideo(selectedService, videoTitle.trim(), videoData, thumbnail, duration);
+      await addServiceVideo(selectedService, videoTitle.trim(), videoData, thumbnail, duration);
       
       toast.success("Video uploaded successfully!");
       setVideoTitle("");
@@ -102,8 +103,8 @@ const AdminServiceVideos = () => {
     }
   };
 
-  const handleDelete = (videoId: string) => {
-    deleteServiceVideo(videoId);
+  const handleDelete = async (videoId: string) => {
+    await deleteServiceVideo(videoId);
     refreshData();
     toast.success("Video deleted successfully");
   };
@@ -130,7 +131,7 @@ const AdminServiceVideos = () => {
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-2xl font-bold text-foreground">Service Videos</h1>
-        <p className="text-muted-foreground">Upload and manage videos for each service (max 5MB per video)</p>
+        <p className="text-muted-foreground">Upload and manage videos for each service (max 10MB per video)</p>
       </div>
 
       {/* Upload Section */}
@@ -145,7 +146,7 @@ const AdminServiceVideos = () => {
           <div className="flex items-start gap-2 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
             <AlertCircle size={18} className="text-amber-600 flex-shrink-0 mt-0.5" />
             <p className="text-sm text-foreground/80">
-              Maximum file size: <strong>5MB</strong>. Supported formats: MP4, WebM, OGG.
+              Maximum file size: <strong>10MB</strong>. Supported formats: MP4, WebM, OGG.
             </p>
           </div>
 
