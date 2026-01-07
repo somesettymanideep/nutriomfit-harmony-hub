@@ -5,7 +5,7 @@ import PageBanner from "@/components/ui/PageBanner";
 import { Button } from "@/components/ui/button";
 import BookConsultationModal from "@/components/services/BookConsultationModal";
 import VideoSlider from "@/components/services/VideoSlider";
-import ServiceVideoSlider from "@/components/services/ServiceVideoSlider";
+import Servicesvideos from "@/components/services/Servicesvideos";
 import { getAllServices, ServiceItem } from "@/lib/adminStore";
 import bannerImage from "@/assets/banner-services.jpg";
 import {
@@ -220,8 +220,8 @@ const Services = () => {
         backgroundImage={bannerImage}
       />
 
-      {/* Video Testimonials Slider */}
-      <VideoSlider />
+
+     
 
       {/* Services */}
       {services.map((service, index) => (
@@ -356,7 +356,7 @@ const Services = () => {
 
               {/* Service Video Slider - only for main 4 services */}
               {['women-wellness', 'diet-program', 'kids-yoga', 'gut-reset'].includes(service.id) && (
-                <ServiceVideoSlider serviceId={service.id} serviceTitle={service.title} />
+                <Servicesvideos serviceId={service.id} serviceTitle={service.title} />
               )}
             </div>
           </div>

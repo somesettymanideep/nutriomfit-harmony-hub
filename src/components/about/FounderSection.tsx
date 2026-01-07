@@ -34,7 +34,7 @@ const FounderSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Meet the <span className="text-gradient-primary">Founder</span>
+            Meet Our <span className="text-gradient-primary">Founder</span>
           </h2>
         </div>
 

@@ -92,7 +92,7 @@ const About = () => {
       <FounderSection />
 
       {/* Brand Introduction */}
-      <section className="py-20 bg-secondary/50">
+      {/* <section className="py-20 bg-secondary/50">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
@@ -121,7 +121,7 @@ const About = () => {
               </div>
             </div>
 
-            {/* Stats */}
+            
             <div className="grid grid-cols-2 gap-6">
               <div className="p-8 bg-card rounded-2xl border border-border text-center shadow-card">
                 <div className="font-display text-4xl font-bold text-primary mb-2">400+</div>
@@ -142,7 +142,7 @@ const About = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Philosophy Section */}
       <section className="py-20 bg-secondary/50">
