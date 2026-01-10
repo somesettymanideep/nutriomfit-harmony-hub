@@ -43,8 +43,8 @@ const workoutColors: Record<WorkoutType, { bg: string; text: string }> = {
   rest: { bg: "bg-gray-100", text: "text-gray-500" },
 };
 
-// Custom workout icon component
-const WorkoutIcon = ({ type, size = 40 }: { type: WorkoutType; size?: number }) => {
+// Custom workout icon component with background removal
+const WorkoutIcon = ({ type, size = 56 }: { type: WorkoutType; size?: number }) => {
   const iconSrc = workoutIconImages[type];
   if (!iconSrc) return null;
   
@@ -52,8 +52,13 @@ const WorkoutIcon = ({ type, size = 40 }: { type: WorkoutType; size?: number }) 
     <img
       src={iconSrc}
       alt={WORKOUT_TYPES[type]}
-      className="object-contain"
-      style={{ width: size, height: size }}
+      className="object-contain rounded-full"
+      style={{ 
+        width: size, 
+        height: size,
+        mixBlendMode: 'multiply',
+        filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
+      }}
     />
   );
 };
@@ -190,7 +195,7 @@ const Schedule = () => {
                     key={type}
                     className={`px-4 py-2 rounded-full ${workoutColors[type].bg} ${workoutColors[type].text} font-medium flex items-center gap-2`}
                   >
-                    <WorkoutIcon type={type} size={24} />
+                    <WorkoutIcon type={type} size={32} />
                     <span>{workoutCounts[type]} {WORKOUT_TYPES[type]} Classes</span>
                   </div>
                 ))}
@@ -204,9 +209,9 @@ const Schedule = () => {
               {(Object.keys(WORKOUT_TYPES) as WorkoutType[])
                 .filter((type) => type !== "rest")
                 .map((type) => (
-                  <div key={type} className="flex items-center gap-2">
-                    <div className={`w-8 h-8 rounded ${workoutColors[type].bg} flex items-center justify-center`}>
-                      <WorkoutIcon type={type} size={24} />
+                  <div key={type} className="flex items-center gap-3">
+                    <div className={`w-12 h-12 rounded-lg ${workoutColors[type].bg} flex items-center justify-center`}>
+                      <WorkoutIcon type={type} size={40} />
                     </div>
                     <span className="text-sm text-muted-foreground">{WORKOUT_TYPES[type]}</span>
                   </div>
@@ -250,7 +255,7 @@ const Schedule = () => {
                           </span>
                           {workout && workout !== "rest" && colors && (
                             <div className={`flex-1 flex items-center justify-center rounded-lg ${colors.bg}`}>
-                              <WorkoutIcon type={workout} size={36} />
+                              <WorkoutIcon type={workout} size={52} />
                             </div>
                           )}
                         </div>
