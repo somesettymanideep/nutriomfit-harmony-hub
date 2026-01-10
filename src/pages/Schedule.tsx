@@ -12,6 +12,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import bannerImage from "@/assets/banner-schedule.jpg";
+import workoutIcons from "@/assets/workout-icons.png";
 
 const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const monthNames = [
@@ -19,13 +20,43 @@ const monthNames = [
   "July", "August", "September", "October", "November", "December"
 ];
 
-const workoutColors: Record<WorkoutType, { bg: string; text: string; icon: string }> = {
-  yoga: { bg: "bg-cyan-100", text: "text-cyan-700", icon: "🧘" },
-  upper_body: { bg: "bg-purple-100", text: "text-purple-700", icon: "💪" },
-  abs: { bg: "bg-pink-100", text: "text-pink-700", icon: "🔥" },
-  lower_body: { bg: "bg-blue-100", text: "text-blue-700", icon: "🦵" },
-  full_body: { bg: "bg-green-100", text: "text-green-700", icon: "⭐" },
-  rest: { bg: "bg-gray-100", text: "text-gray-500", icon: "😴" },
+// Icon positions in the sprite (approximate percentages for background-position)
+const workoutIconPositions: Record<WorkoutType, { x: number; y: number }> = {
+  yoga: { x: 0, y: 0 },
+  upper_body: { x: 33, y: 0 },
+  abs: { x: 66, y: 0 },
+  lower_body: { x: 16, y: 55 },
+  full_body: { x: 50, y: 55 },
+  rest: { x: -100, y: -100 }, // Hidden
+};
+
+const workoutColors: Record<WorkoutType, { bg: string; text: string }> = {
+  yoga: { bg: "bg-cyan-100", text: "text-cyan-700" },
+  upper_body: { bg: "bg-purple-100", text: "text-purple-700" },
+  abs: { bg: "bg-pink-100", text: "text-pink-700" },
+  lower_body: { bg: "bg-blue-100", text: "text-blue-700" },
+  full_body: { bg: "bg-green-100", text: "text-green-700" },
+  rest: { bg: "bg-gray-100", text: "text-gray-500" },
+};
+
+// Custom workout icon component
+const WorkoutIcon = ({ type, size = 40 }: { type: WorkoutType; size?: number }) => {
+  const position = workoutIconPositions[type];
+  if (type === "rest") return null;
+  
+  return (
+    <div
+      className="inline-block"
+      style={{
+        width: size,
+        height: size,
+        backgroundImage: `url(${workoutIcons})`,
+        backgroundSize: "300% 200%",
+        backgroundPosition: `${position.x}% ${position.y}%`,
+        backgroundRepeat: "no-repeat",
+      }}
+    />
+  );
 };
 
 const Schedule = () => {
@@ -160,7 +191,7 @@ const Schedule = () => {
                     key={type}
                     className={`px-4 py-2 rounded-full ${workoutColors[type].bg} ${workoutColors[type].text} font-medium flex items-center gap-2`}
                   >
-                    <span>{workoutColors[type].icon}</span>
+                    <WorkoutIcon type={type} size={24} />
                     <span>{workoutCounts[type]} {WORKOUT_TYPES[type]} Classes</span>
                   </div>
                 ))}
@@ -175,8 +206,8 @@ const Schedule = () => {
                 .filter((type) => type !== "rest")
                 .map((type) => (
                   <div key={type} className="flex items-center gap-2">
-                    <div className={`w-6 h-6 rounded ${workoutColors[type].bg} flex items-center justify-center text-sm`}>
-                      {workoutColors[type].icon}
+                    <div className={`w-8 h-8 rounded ${workoutColors[type].bg} flex items-center justify-center`}>
+                      <WorkoutIcon type={type} size={24} />
                     </div>
                     <span className="text-sm text-muted-foreground">{WORKOUT_TYPES[type]}</span>
                   </div>
@@ -220,7 +251,7 @@ const Schedule = () => {
                           </span>
                           {workout && workout !== "rest" && colors && (
                             <div className={`flex-1 flex items-center justify-center rounded-lg ${colors.bg}`}>
-                              <span className="text-2xl md:text-3xl">{colors.icon}</span>
+                              <WorkoutIcon type={workout} size={36} />
                             </div>
                           )}
                         </div>
