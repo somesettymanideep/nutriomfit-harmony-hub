@@ -24,8 +24,6 @@ const DEFAULT_SCHEDULE: ScheduleData = {
 };
 
 // Generate a default schedule for current and next 2 months
-// Pattern based on January 2026 calendar:
-// Sun/Mon = Rest, Tue = Abs, Wed = Lower Body, Thu = Yoga, Fri = Yoga, Sat = Full Body
 function generateDefaultSchedule(): Record<string, WorkoutType> {
   const schedule: Record<string, WorkoutType> = {};
   const today = new Date();
@@ -42,27 +40,14 @@ function generateDefaultSchedule(): Record<string, WorkoutType> {
       const dayOfWeek = date.getDay();
       const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 
-      // Pattern: Sun=Rest, Mon=Rest, Tue=Abs, Wed=Lower Body, Thu=Yoga, Fri=Yoga, Sat=Full Body
-      switch (dayOfWeek) {
-        case 0: // Sunday
-        case 1: // Monday
-          schedule[dateKey] = "rest";
-          break;
-        case 2: // Tuesday
-          schedule[dateKey] = "abs";
-          break;
-        case 3: // Wednesday
-          schedule[dateKey] = "lower_body";
-          break;
-        case 4: // Thursday
-          schedule[dateKey] = "yoga";
-          break;
-        case 5: // Friday
-          schedule[dateKey] = "yoga";
-          break;
-        case 6: // Saturday
-          schedule[dateKey] = "full_body";
-          break;
+      // Sunday (0) and Monday (1) are rest days
+      if (dayOfWeek === 0 || dayOfWeek === 1) {
+        schedule[dateKey] = "rest";
+      } else {
+        // Rotate through workout types for other days
+        const workoutIndex = (day % 5);
+        const workouts: WorkoutType[] = ["yoga", "upper_body", "abs", "lower_body", "full_body"];
+        schedule[dateKey] = workouts[workoutIndex];
       }
     }
   }

@@ -7,7 +7,7 @@ const serviceVideos = {
     {
       id: "ww-1",
       title: "Pregnancy yoga Cilent Review",
-      videoUrl: "https://image2url.com/r2/default/videos/1767904325649-9e050c52-fa5a-4b67-af0f-86f60be6c175.mp4",
+      videoUrl: "https://image2url.com/r2/default/videos/1767809343057-dfd46ab1-3c93-4dcd-857a-7753383ebd80.mp4",
       duration: "3:45"
     }
   ],
@@ -28,12 +28,6 @@ const serviceVideos = {
       id: "dp-3",
       title: "90-Day+21 Days Cilent review",
       videoUrl: "https://image2url.com/r2/default/videos/1767811143780-d9f99fb0-b52d-448c-86bf-8e15d286a286.mp4",
-      duration: "3:30"
-    },
-    {
-      id: "dp-4",
-      title: "90-Day+21 Days Cilent review",
-      videoUrl: "https://image2url.com/r2/default/videos/1767809343057-dfd46ab1-3c93-4dcd-857a-7753383ebd80.mp4",
       duration: "3:30"
     }
   ],
