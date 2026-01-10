@@ -12,7 +12,11 @@ import {
   ArrowRight,
 } from "lucide-react";
 import bannerImage from "@/assets/banner-schedule.jpg";
-import workoutIcons from "@/assets/workout-icons.png";
+import iconYoga from "@/assets/icon-yoga.png";
+import iconUpperBody from "@/assets/icon-upper-body.png";
+import iconAbs from "@/assets/icon-abs.png";
+import iconLowerBody from "@/assets/icon-lower-body.png";
+import iconFullBody from "@/assets/icon-full-body.png";
 
 const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const monthNames = [
@@ -20,14 +24,14 @@ const monthNames = [
   "July", "August", "September", "October", "November", "December"
 ];
 
-// Icon positions in the sprite (approximate percentages for background-position)
-const workoutIconPositions: Record<WorkoutType, { x: number; y: number }> = {
-  yoga: { x: 0, y: 0 },
-  upper_body: { x: 33, y: 0 },
-  abs: { x: 66, y: 0 },
-  lower_body: { x: 16, y: 55 },
-  full_body: { x: 50, y: 55 },
-  rest: { x: -100, y: -100 }, // Hidden
+// Individual workout icons
+const workoutIconImages: Record<WorkoutType, string | null> = {
+  yoga: iconYoga,
+  upper_body: iconUpperBody,
+  abs: iconAbs,
+  lower_body: iconLowerBody,
+  full_body: iconFullBody,
+  rest: null,
 };
 
 const workoutColors: Record<WorkoutType, { bg: string; text: string }> = {
@@ -41,20 +45,15 @@ const workoutColors: Record<WorkoutType, { bg: string; text: string }> = {
 
 // Custom workout icon component
 const WorkoutIcon = ({ type, size = 40 }: { type: WorkoutType; size?: number }) => {
-  const position = workoutIconPositions[type];
-  if (type === "rest") return null;
+  const iconSrc = workoutIconImages[type];
+  if (!iconSrc) return null;
   
   return (
-    <div
-      className="inline-block"
-      style={{
-        width: size,
-        height: size,
-        backgroundImage: `url(${workoutIcons})`,
-        backgroundSize: "300% 200%",
-        backgroundPosition: `${position.x}% ${position.y}%`,
-        backgroundRepeat: "no-repeat",
-      }}
+    <img
+      src={iconSrc}
+      alt={WORKOUT_TYPES[type]}
+      className="object-contain"
+      style={{ width: size, height: size }}
     />
   );
 };
