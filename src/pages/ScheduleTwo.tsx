@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
+import PageBanner from "@/components/ui/PageBanner";
 import { getScheduleTwoData, ScheduleTwoData } from "@/lib/scheduleTwoStore";
 import logo from "@/assets/nutriomfit-logo.jpg";
 import iconYoga from "@/assets/icon-yoga.png";
@@ -7,7 +8,8 @@ import iconUpperBody from "@/assets/icon-upper-body.png";
 import iconAbs from "@/assets/icon-abs.png";
 import iconLowerBody from "@/assets/icon-lower-body.png";
 import iconFullBody from "@/assets/icon-full-body.png";
-import { Clock } from "lucide-react";
+import bannerSchedule from "@/assets/banner-schedule.jpg";
+import { Clock, CalendarDays } from "lucide-react";
 
 const ScheduleTwo = () => {
   const [scheduleData, setScheduleData] = useState<ScheduleTwoData>(getScheduleTwoData());
@@ -30,6 +32,14 @@ const ScheduleTwo = () => {
 
   return (
     <Layout>
+      <PageBanner
+        badge="Monthly View"
+        title="Workout"
+        highlight="Calendar"
+        description="Plan your fitness journey with our monthly workout calendar. Stay consistent, track your progress, and achieve your goals."
+        icon={<CalendarDays size={16} />}
+        backgroundImage={bannerSchedule}
+      />
       <div className="min-h-screen bg-white py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
