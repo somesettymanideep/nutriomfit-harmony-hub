@@ -44,13 +44,13 @@ const workoutColors: Record<WorkoutType, { bg: string; text: string }> = {
 };
 
 // Custom workout icon component with background removal
-const WorkoutIcon = ({ type, size = 56 }: { type: WorkoutType; size?: number }) => {
+const WorkoutIcon = ({ type, size = 72 }: { type: WorkoutType; size?: number }) => {
   const iconSrc = workoutIconImages[type];
   if (!iconSrc) return null;
   
   return (
     <img
-      src={iconSrc}
+      src={iconSrc} 
       alt={WORKOUT_TYPES[type]}
       className="object-contain rounded-full"
       style={{ 
@@ -255,7 +255,7 @@ const Schedule = () => {
                           </span>
                           {workout && workout !== "rest" && colors && (
                             <div className={`flex-1 flex items-center justify-center rounded-lg ${colors.bg}`}>
-                              <WorkoutIcon type={workout} size={52} />
+                              <WorkoutIcon type={workout} size={72} />
                             </div>
                           )}
                         </div>
