@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,12 +10,11 @@ import {
   ScheduleTwoData,
   resetScheduleTwoToDefault 
 } from "@/lib/scheduleTwoStore";
-import { Upload, Save, RotateCcw, Image, Eye } from "lucide-react";
+import { Link as LinkIcon, Save, RotateCcw, Image, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const AdminScheduleTwo = () => {
   const { toast } = useToast();
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [scheduleData, setScheduleData] = useState<ScheduleTwoData>(getScheduleTwoData());
   const [hasChanges, setHasChanges] = useState(false);
 
@@ -36,30 +35,9 @@ const AdminScheduleTwo = () => {
     setHasChanges(true);
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (!file.type.startsWith('image/')) {
-      toast({
-        title: "Invalid file type",
-        description: "Please upload an image file",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64 = reader.result as string;
-      setScheduleData(prev => ({ ...prev, calendarImage: base64 }));
-      setHasChanges(true);
-      toast({
-        title: "Image uploaded",
-        description: "Calendar image has been uploaded. Click Save to apply.",
-      });
-    };
-    reader.readAsDataURL(file);
+  const handleImageUrlChange = (url: string) => {
+    setScheduleData(prev => ({ ...prev, calendarImage: url || null }));
+    setHasChanges(true);
   };
 
   const handleSave = () => {
@@ -107,7 +85,7 @@ const AdminScheduleTwo = () => {
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
-        {/* Calendar Image Upload */}
+        {/* Calendar Image URL */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -116,41 +94,44 @@ const AdminScheduleTwo = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div 
-              className="border-2 border-dashed border-border rounded-lg p-6 text-center cursor-pointer hover:border-primary/50 transition-colors"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              {scheduleData.calendarImage ? (
-                <div className="space-y-4">
-                  <img 
-                    src={scheduleData.calendarImage} 
-                    alt="Calendar Preview" 
-                    className="max-h-64 mx-auto rounded-lg shadow-md"
-                  />
-                  <p className="text-sm text-muted-foreground">Click to replace image</p>
-                </div>
-              ) : (
-                <div className="py-8">
-                  <Upload size={48} className="mx-auto text-muted-foreground mb-4" />
-                  <p className="text-lg font-medium text-foreground">Upload Calendar Image</p>
-                  <p className="text-sm text-muted-foreground">Click or drag and drop</p>
-                </div>
-              )}
+            <div>
+              <Label htmlFor="imageUrl" className="flex items-center gap-2">
+                <LinkIcon size={14} />
+                Image URL
+              </Label>
+              <Input
+                id="imageUrl"
+                type="url"
+                value={scheduleData.calendarImage || ""}
+                onChange={(e) => handleImageUrlChange(e.target.value)}
+                placeholder="https://example.com/calendar-image.jpg"
+                className="mt-1"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Paste a direct link to your calendar image
+              </p>
             </div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="hidden"
-            />
+            
+            {scheduleData.calendarImage && (
+              <div className="border border-border rounded-lg p-4">
+                <p className="text-sm font-medium text-foreground mb-2">Preview:</p>
+                <img 
+                  src={scheduleData.calendarImage} 
+                  alt="Calendar Preview" 
+                  className="max-h-64 mx-auto rounded-lg shadow-md"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
+            
             {scheduleData.calendarImage && (
               <Button 
                 variant="destructive" 
                 size="sm"
                 onClick={() => {
-                  setScheduleData(prev => ({ ...prev, calendarImage: null }));
-                  setHasChanges(true);
+                  handleImageUrlChange("");
                 }}
               >
                 Remove Image
