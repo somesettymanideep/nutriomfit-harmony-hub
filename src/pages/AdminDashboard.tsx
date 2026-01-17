@@ -39,6 +39,7 @@ const AdminDashboard = () => {
   const navItems = [
     { path: "/admin/dashboard", icon: LayoutDashboard, label: "Overview" },
     { path: "/admin/dashboard/services", icon: FileText, label: "Services" },
+    { path: "/admin/dashboard/service-images", icon: Users, label: "Client Images" },
     { path: "/admin/dashboard/videos", icon: Video, label: "Service Videos" },
     { path: "/admin/dashboard/schedule", icon: Calendar, label: "Schedule" },
     { path: "/admin/dashboard/schedule-two", icon: Calendar, label: "Schedule Two" },
