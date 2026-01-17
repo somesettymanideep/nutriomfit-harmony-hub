@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import BookConsultationModal from "@/components/services/BookConsultationModal";
 import VideoSlider from "@/components/services/VideoSlider";
 import Servicesvideos from "@/components/services/Servicesvideos";
+import ClientTestimonialCarousel from "@/components/services/ClientTestimonialCarousel";
 import { getAllServices, ServiceItem } from "@/lib/adminStore";
 import bannerImage from "@/assets/banner-services.jpg";
 import {
@@ -353,6 +354,9 @@ const Services = () => {
                   <span className="text-primary font-medium">{service.stats}</span>
                 </div>
               )}
+
+              {/* Client Testimonial Images Carousel */}
+              <ClientTestimonialCarousel serviceId={service.id} serviceTitle={service.title} />
 
               {/* Service Video Slider - only for main 4 services */}
               {['women-wellness', 'diet-program', 'kids-yoga', 'gut-reset'].includes(service.id) && (
