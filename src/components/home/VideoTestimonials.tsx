@@ -25,7 +25,26 @@ const VideoTestimonials = () => {
   const [isPlaying, setIsPlaying] = useState<string | null>(null);
 
   useEffect(() => {
-    setTestimonials(getHomeVideoTestimonials());
+    const load = () => {
+      const next = getHomeVideoTestimonials();
+      setTestimonials(next);
+      setActiveIndex(0);
+      setIsPlaying(null);
+    };
+
+    load();
+
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "home_video_testimonials") load();
+    };
+
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("home-video-testimonials-updated", load as EventListener);
+
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("home-video-testimonials-updated", load as EventListener);
+    };
   }, []);
 
   const nextSlide = () => {
