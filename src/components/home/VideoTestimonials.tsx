@@ -68,24 +68,33 @@ const VideoTestimonials = () => {
               >
                 <div className="bg-card rounded-2xl overflow-hidden shadow-2xl max-w-md">
                   {/* Video Card */}
-                  <div className="relative aspect-video bg-muted flex items-center justify-center">
-                    <Video className="w-16 h-16 text-muted-foreground/50" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 to-transparent" />
-                    <button
-                      onClick={() =>
-                        setIsPlaying(
-                          isPlaying === testimonial.id ? null : testimonial.id
-                        )
-                      }
-                      className="absolute inset-0 flex items-center justify-center group"
-                    >
-                      <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
-                        <Play size={28} className="text-primary-foreground ml-1" />
-                      </div>
-                    </button>
-                    <span className="absolute top-4 left-4 px-3 py-1 bg-primary/90 text-primary-foreground text-xs font-medium rounded-full">
-                      {testimonial.serviceName}
-                    </span>
+                  <div className="relative aspect-video bg-muted">
+                    {isPlaying === testimonial.id ? (
+                      <video
+                        src={testimonial.videoUrl}
+                        controls
+                        autoPlay
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <>
+                        <div className="w-full h-full flex items-center justify-center">
+                          <Video className="w-16 h-16 text-muted-foreground/50" />
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 to-transparent" />
+                        <button
+                          onClick={() => setIsPlaying(testimonial.id)}
+                          className="absolute inset-0 flex items-center justify-center group"
+                        >
+                          <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                            <Play size={28} className="text-primary-foreground ml-1" />
+                          </div>
+                        </button>
+                        <span className="absolute top-4 left-4 px-3 py-1 bg-primary/90 text-primary-foreground text-xs font-medium rounded-full">
+                          {testimonial.serviceName}
+                        </span>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
