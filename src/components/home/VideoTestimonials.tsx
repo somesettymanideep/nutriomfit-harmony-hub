@@ -73,64 +73,75 @@ const VideoTestimonials = () => {
         <div className="relative max-w-6xl mx-auto">
           {/* Cards Container */}
           <div className="flex items-center justify-center gap-6 py-8">
-            {getVisibleCards().map((testimonial) => (
-              <div
-                key={`${testimonial.id}-${testimonial.position}`}
-                className={`transition-all duration-500 ${
-                  testimonial.position === 0
-                    ? "scale-100 opacity-100 z-10"
-                    : "scale-75 opacity-50 hidden md:block"
-                }`}
-              >
-                <div className="bg-card rounded-2xl overflow-hidden shadow-2xl max-w-md">
-                  {/* Video Card */}
-                  <div className="relative aspect-video bg-muted">
-                    {isPlaying === testimonial.id && testimonial.videoUrl !== '#' ? (
-                      testimonial.videoUrl.includes('youtube.com') || testimonial.videoUrl.includes('youtu.be') ? (
-                        <iframe
-                          src={getYouTubeEmbedUrl(testimonial.videoUrl)}
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          className="w-full h-full"
-                        />
-                      ) : testimonial.videoUrl.includes('vimeo.com') ? (
-                        <iframe
-                          src={getVimeoEmbedUrl(testimonial.videoUrl)}
-                          allow="autoplay; fullscreen; picture-in-picture"
-                          allowFullScreen
-                          className="w-full h-full"
-                        />
+            {getVisibleCards().map((testimonial) => {
+              const isVideoPlaying = isPlaying === testimonial.id;
+              const hasValidUrl = testimonial.videoUrl && testimonial.videoUrl !== '#' && testimonial.videoUrl.trim() !== '';
+              const isYouTube = testimonial.videoUrl?.includes('youtube.com') || testimonial.videoUrl?.includes('youtu.be');
+              const isVimeo = testimonial.videoUrl?.includes('vimeo.com');
+              
+              return (
+                <div
+                  key={`${testimonial.id}-${testimonial.position}`}
+                  className={`transition-all duration-500 ${
+                    testimonial.position === 0
+                      ? "scale-100 opacity-100 z-10"
+                      : "scale-75 opacity-50 hidden md:block"
+                  }`}
+                >
+                  <div className="bg-card rounded-2xl overflow-hidden shadow-2xl max-w-md">
+                    {/* Video Card */}
+                    <div className="relative aspect-video bg-muted">
+                      {isVideoPlaying && hasValidUrl ? (
+                        isYouTube ? (
+                          <iframe
+                            src={getYouTubeEmbedUrl(testimonial.videoUrl)}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            className="w-full h-full"
+                          />
+                        ) : isVimeo ? (
+                          <iframe
+                            src={getVimeoEmbedUrl(testimonial.videoUrl)}
+                            allow="autoplay; fullscreen; picture-in-picture"
+                            allowFullScreen
+                            className="w-full h-full"
+                          />
+                        ) : (
+                          <video
+                            key={testimonial.videoUrl}
+                            src={testimonial.videoUrl}
+                            controls
+                            autoPlay
+                            playsInline
+                            className="w-full h-full object-contain bg-black"
+                            onError={(e) => console.error('Video load error:', e)}
+                          />
+                        )
                       ) : (
-                        <video
-                          src={testimonial.videoUrl}
-                          controls
-                          autoPlay
-                          className="w-full h-full object-contain bg-black"
-                        />
-                      )
-                    ) : (
-                      <>
-                        <div className="w-full h-full flex items-center justify-center">
-                          <Video className="w-16 h-16 text-muted-foreground/50" />
-                        </div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 to-transparent" />
-                        <button
-                          onClick={() => setIsPlaying(testimonial.id)}
-                          className="absolute inset-0 flex items-center justify-center group"
-                        >
-                          <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
-                            <Play size={28} className="text-primary-foreground ml-1" />
+                        <>
+                          <div className="w-full h-full flex items-center justify-center">
+                            <Video className="w-16 h-16 text-muted-foreground/50" />
                           </div>
-                        </button>
-                        <span className="absolute top-4 left-4 px-3 py-1 bg-primary/90 text-primary-foreground text-xs font-medium rounded-full">
-                          {testimonial.serviceName}
-                        </span>
-                      </>
-                    )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 to-transparent" />
+                          <button
+                            onClick={() => setIsPlaying(testimonial.id)}
+                            className="absolute inset-0 flex items-center justify-center group"
+                            disabled={!hasValidUrl}
+                          >
+                            <div className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-transform group-hover:scale-110 ${hasValidUrl ? 'bg-primary' : 'bg-muted-foreground/50'}`}>
+                              <Play size={28} className="text-primary-foreground ml-1" />
+                            </div>
+                          </button>
+                          <span className="absolute top-4 left-4 px-3 py-1 bg-primary/90 text-primary-foreground text-xs font-medium rounded-full">
+                            {testimonial.serviceName}
+                          </span>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Navigation */}
