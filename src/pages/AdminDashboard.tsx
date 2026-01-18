@@ -14,6 +14,7 @@ import {
   Clock,
   IndianRupee,
   Video,
+  Home,
 } from "lucide-react";
 
 const AdminDashboard = () => {
@@ -41,6 +42,7 @@ const AdminDashboard = () => {
     { path: "/admin/dashboard/services", icon: FileText, label: "Services" },
     { path: "/admin/dashboard/service-images", icon: Users, label: "Client Images" },
     { path: "/admin/dashboard/videos", icon: Video, label: "Service Videos" },
+    { path: "/admin/dashboard/home-videos", icon: Home, label: "Home Videos" },
     { path: "/admin/dashboard/schedule", icon: Calendar, label: "Schedule" },
     { path: "/admin/dashboard/schedule-two", icon: Calendar, label: "Schedule Two" },
     { path: "/admin/dashboard/settings", icon: Settings, label: "Settings" },

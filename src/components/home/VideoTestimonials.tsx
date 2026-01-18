@@ -1,84 +1,40 @@
-import { useState } from "react";
-import { Play, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const videoTestimonials = [
-  {
-    id: 1,
-    name: "Dr. Priya Sharma",
-    role: "Gynecologist",
-    thumbnail: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400",
-    videoUrl: "#",
-    quote:
-      "The 90-Day Diet Program transformed my relationship with food. I lost 12 kg and feel more energetic than ever.",
-    program: "90-Day Diet Program",
-  },
-  {
-    id: 2,
-    name: "Ananya Krishnan",
-    role: "IT Professional",
-    thumbnail: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400",
-    videoUrl: "#",
-    quote:
-      "The Women Wellness Program helped me manage my PCOS symptoms naturally. The therapeutic yoga sessions are life-changing.",
-    program: "Women Wellness Program",
-  },
-  {
-    id: 3,
-    name: "Ravi Menon",
-    role: "Business Owner",
-    thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
-    videoUrl: "#",
-    quote:
-      "The LSP + Juice Fasting reset my entire digestive system. I feel rejuvenated and my energy levels have skyrocketed.",
-    program: "LSP + Juice Fasting",
-  },
-  {
-    id: 4,
-    name: "Meera & Arjun's Mom",
-    role: "Parent",
-    thumbnail: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400",
-    videoUrl: "#",
-    quote:
-      "My kids love the yoga classes! They've become more focused and calm. The anatomy-based learning is brilliant.",
-    program: "Kids Yoga",
-  },
-  {
-    id: 5,
-    name: "Dr. Vikram Patel",
-    role: "Pediatrician",
-    thumbnail: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400",
-    videoUrl: "#",
-    quote:
-      "As a medical professional, I appreciate the evidence-based approach. Lost 15 kg safely with the diet program.",
-    program: "90-Day Diet Program",
-  },
-];
+import { getHomeVideoTestimonials, HomeVideoTestimonial } from "@/lib/homeVideoTestimonialsStore";
 
 const VideoTestimonials = () => {
+  const [testimonials, setTestimonials] = useState<HomeVideoTestimonial[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState<number | null>(null);
+  const [isPlaying, setIsPlaying] = useState<string | null>(null);
+
+  useEffect(() => {
+    setTestimonials(getHomeVideoTestimonials());
+  }, []);
 
   const nextSlide = () => {
-    setActiveIndex((prev) => (prev + 1) % videoTestimonials.length);
+    setActiveIndex((prev) => (prev + 1) % testimonials.length);
   };
 
   const prevSlide = () => {
     setActiveIndex(
-      (prev) =>
-        (prev - 1 + videoTestimonials.length) % videoTestimonials.length
+      (prev) => (prev - 1 + testimonials.length) % testimonials.length
     );
   };
 
   const getVisibleCards = () => {
+    if (testimonials.length === 0) return [];
     const cards = [];
     for (let i = -1; i <= 1; i++) {
-      const index =
-        (activeIndex + i + videoTestimonials.length) % videoTestimonials.length;
-      cards.push({ ...videoTestimonials[index], position: i });
+      const index = (activeIndex + i + testimonials.length) % testimonials.length;
+      cards.push({ ...testimonials[index], position: i });
     }
     return cards;
   };
+
+  if (testimonials.length === 0) {
+    return null;
+  }
 
   return (
     <section className="py-20 bg-gradient-to-br from-charcoal to-charcoal/95 overflow-hidden">
@@ -115,7 +71,7 @@ const VideoTestimonials = () => {
                   <div className="relative aspect-video">
                     <img
                       src={testimonial.thumbnail}
-                      alt={testimonial.name}
+                      alt={testimonial.serviceName}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 to-transparent" />
@@ -132,35 +88,8 @@ const VideoTestimonials = () => {
                       </div>
                     </button>
                     <span className="absolute top-4 left-4 px-3 py-1 bg-primary/90 text-primary-foreground text-xs font-medium rounded-full">
-                      {testimonial.program}
+                      {testimonial.serviceName}
                     </span>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-6">
-                    <div className="flex items-start gap-3 mb-4">
-                      <Quote size={24} className="text-primary flex-shrink-0 mt-1" />
-                      <p className="text-muted-foreground italic leading-relaxed">
-                        "{testimonial.quote}"
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-3 pt-4 border-t border-border">
-                      <div className="w-12 h-12 rounded-full overflow-hidden">
-                        <img
-                          src={testimonial.thumbnail}
-                          alt={testimonial.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div>
-                        <h4 className="font-display font-semibold text-foreground">
-                          {testimonial.name}
-                        </h4>
-                        <p className="text-sm text-muted-foreground">
-                          {testimonial.role}
-                        </p>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -180,7 +109,7 @@ const VideoTestimonials = () => {
 
             {/* Dots */}
             <div className="flex gap-2">
-              {videoTestimonials.map((_, index) => (
+              {testimonials.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}
