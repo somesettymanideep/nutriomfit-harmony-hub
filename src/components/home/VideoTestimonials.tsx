@@ -3,6 +3,22 @@ import { Play, ChevronLeft, ChevronRight, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getHomeVideoTestimonials, HomeVideoTestimonial } from "@/lib/homeVideoTestimonialsStore";
 
+// Helper function to extract YouTube embed URL
+const getYouTubeEmbedUrl = (url: string): string => {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  const videoId = match && match[2].length === 11 ? match[2] : null;
+  return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : url;
+};
+
+// Helper function to extract Vimeo embed URL
+const getVimeoEmbedUrl = (url: string): string => {
+  const regExp = /vimeo.com\/(\d+)/;
+  const match = url.match(regExp);
+  const videoId = match ? match[1] : null;
+  return videoId ? `https://player.vimeo.com/video/${videoId}?autoplay=1` : url;
+};
+
 const VideoTestimonials = () => {
   const [testimonials, setTestimonials] = useState<HomeVideoTestimonial[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -69,13 +85,29 @@ const VideoTestimonials = () => {
                 <div className="bg-card rounded-2xl overflow-hidden shadow-2xl max-w-md">
                   {/* Video Card */}
                   <div className="relative aspect-video bg-muted">
-                    {isPlaying === testimonial.id ? (
-                      <video
-                        src={testimonial.videoUrl}
-                        controls
-                        autoPlay
-                        className="w-full h-full object-cover"
-                      />
+                    {isPlaying === testimonial.id && testimonial.videoUrl !== '#' ? (
+                      testimonial.videoUrl.includes('youtube.com') || testimonial.videoUrl.includes('youtu.be') ? (
+                        <iframe
+                          src={getYouTubeEmbedUrl(testimonial.videoUrl)}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="w-full h-full"
+                        />
+                      ) : testimonial.videoUrl.includes('vimeo.com') ? (
+                        <iframe
+                          src={getVimeoEmbedUrl(testimonial.videoUrl)}
+                          allow="autoplay; fullscreen; picture-in-picture"
+                          allowFullScreen
+                          className="w-full h-full"
+                        />
+                      ) : (
+                        <video
+                          src={testimonial.videoUrl}
+                          controls
+                          autoPlay
+                          className="w-full h-full object-contain bg-black"
+                        />
+                      )
                     ) : (
                       <>
                         <div className="w-full h-full flex items-center justify-center">
