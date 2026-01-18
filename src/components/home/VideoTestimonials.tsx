@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Play, ChevronLeft, ChevronRight } from "lucide-react";
+import { Play, ChevronLeft, ChevronRight, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getHomeVideoTestimonials, HomeVideoTestimonial } from "@/lib/homeVideoTestimonialsStore";
 
@@ -67,13 +67,9 @@ const VideoTestimonials = () => {
                 }`}
               >
                 <div className="bg-card rounded-2xl overflow-hidden shadow-2xl max-w-md">
-                  {/* Video Thumbnail */}
-                  <div className="relative aspect-video">
-                    <img
-                      src={testimonial.thumbnail}
-                      alt={testimonial.serviceName}
-                      className="w-full h-full object-cover"
-                    />
+                  {/* Video Card */}
+                  <div className="relative aspect-video bg-muted flex items-center justify-center">
+                    <Video className="w-16 h-16 text-muted-foreground/50" />
                     <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 to-transparent" />
                     <button
                       onClick={() =>
