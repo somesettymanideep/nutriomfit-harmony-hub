@@ -20,12 +20,13 @@ import {
   getHomeVideoTestimonials,
   addHomeVideoTestimonial,
   deleteHomeVideoTestimonial,
-  HomeVideoTestimonial,
+  HomeVideoTestimonial
 } from "@/lib/homeVideoTestimonialsStore";
 
 const AdminHomeVideos = () => {
   const [videos, setVideos] = useState<HomeVideoTestimonial[]>([]);
   const [videoUrl, setVideoUrl] = useState("");
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [serviceName, setServiceName] = useState("");
 
   useEffect(() => {
@@ -41,6 +42,10 @@ const AdminHomeVideos = () => {
       toast.error("Please enter a video URL");
       return;
     }
+    if (!thumbnailUrl.trim()) {
+      toast.error("Please enter a thumbnail URL");
+      return;
+    }
     if (!serviceName.trim()) {
       toast.error("Please enter a service name");
       return;
@@ -48,10 +53,12 @@ const AdminHomeVideos = () => {
 
     addHomeVideoTestimonial({
       videoUrl: videoUrl.trim(),
-      serviceName: serviceName.trim(),
+      thumbnail: thumbnailUrl.trim(),
+      serviceName: serviceName.trim()
     });
 
     setVideoUrl("");
+    setThumbnailUrl("");
     setServiceName("");
     refreshData();
     toast.success("Video added successfully");
@@ -79,26 +86,35 @@ const AdminHomeVideos = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="serviceName">Service Name</Label>
-            <Input
-              id="serviceName"
-              value={serviceName}
-              onChange={(e) => setServiceName(e.target.value)}
-              placeholder="e.g., 90-Day Diet Program"
-            />
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="serviceName">Service Name</Label>
+              <Input
+                id="serviceName"
+                value={serviceName}
+                onChange={(e) => setServiceName(e.target.value)}
+                placeholder="e.g., 90-Day Diet Program"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="videoUrl">Video URL</Label>
+              <Input
+                id="videoUrl"
+                value={videoUrl}
+                onChange={(e) => setVideoUrl(e.target.value)}
+                placeholder="https://..."
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="thumbnailUrl">Thumbnail URL</Label>
+              <Input
+                id="thumbnailUrl"
+                value={thumbnailUrl}
+                onChange={(e) => setThumbnailUrl(e.target.value)}
+                placeholder="https://..."
+              />
+            </div>
           </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="videoUrl">Video URL</Label>
-            <Input
-              id="videoUrl"
-              value={videoUrl}
-              onChange={(e) => setVideoUrl(e.target.value)}
-              placeholder="https://... (YouTube, Vimeo, or direct .mp4 URL)"
-            />
-          </div>
-
           <Button onClick={handleAddVideo} className="w-full md:w-auto">
             <Plus className="w-4 h-4 mr-2" />
             Add Video
@@ -124,12 +140,17 @@ const AdminHomeVideos = () => {
               {videos.map((video) => (
                 <div
                   key={video.id}
-                  className="relative group rounded-lg overflow-hidden border border-border bg-muted"
+                  className="relative group rounded-lg overflow-hidden border border-border"
                 >
-                  <div className="aspect-video flex items-center justify-center">
-                    <Video className="w-12 h-12 text-muted-foreground" />
+                  <div className="aspect-video">
+                    <img
+                      src={video.thumbnail}
+                      alt={video.serviceName}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-background/80 to-transparent">
+                  <div className="absolute bottom-0 left-0 right-0 p-3">
                     <span className="inline-block px-2 py-1 bg-primary/90 text-primary-foreground text-xs font-medium rounded">
                       {video.serviceName}
                     </span>

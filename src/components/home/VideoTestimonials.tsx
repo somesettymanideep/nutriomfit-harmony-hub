@@ -1,23 +1,7 @@
 import { useState, useEffect } from "react";
-import { Play, ChevronLeft, ChevronRight, Video } from "lucide-react";
+import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getHomeVideoTestimonials, HomeVideoTestimonial } from "@/lib/homeVideoTestimonialsStore";
-
-// Helper function to extract YouTube embed URL
-const getYouTubeEmbedUrl = (url: string): string => {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  const match = url.match(regExp);
-  const videoId = match && match[2].length === 11 ? match[2] : null;
-  return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : url;
-};
-
-// Helper function to extract Vimeo embed URL
-const getVimeoEmbedUrl = (url: string): string => {
-  const regExp = /vimeo.com\/(\d+)/;
-  const match = url.match(regExp);
-  const videoId = match ? match[1] : null;
-  return videoId ? `https://player.vimeo.com/video/${videoId}?autoplay=1` : url;
-};
 
 const VideoTestimonials = () => {
   const [testimonials, setTestimonials] = useState<HomeVideoTestimonial[]>([]);
@@ -25,26 +9,7 @@ const VideoTestimonials = () => {
   const [isPlaying, setIsPlaying] = useState<string | null>(null);
 
   useEffect(() => {
-    const load = () => {
-      const next = getHomeVideoTestimonials();
-      setTestimonials(next);
-      setActiveIndex(0);
-      setIsPlaying(null);
-    };
-
-    load();
-
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === "home_video_testimonials") load();
-    };
-
-    window.addEventListener("storage", onStorage);
-    window.addEventListener("home-video-testimonials-updated", load as EventListener);
-
-    return () => {
-      window.removeEventListener("storage", onStorage);
-      window.removeEventListener("home-video-testimonials-updated", load as EventListener);
-    };
+    setTestimonials(getHomeVideoTestimonials());
   }, []);
 
   const nextSlide = () => {
@@ -92,75 +57,43 @@ const VideoTestimonials = () => {
         <div className="relative max-w-6xl mx-auto">
           {/* Cards Container */}
           <div className="flex items-center justify-center gap-6 py-8">
-            {getVisibleCards().map((testimonial) => {
-              const isVideoPlaying = isPlaying === testimonial.id;
-              const hasValidUrl = testimonial.videoUrl && testimonial.videoUrl !== '#' && testimonial.videoUrl.trim() !== '';
-              const isYouTube = testimonial.videoUrl?.includes('youtube.com') || testimonial.videoUrl?.includes('youtu.be');
-              const isVimeo = testimonial.videoUrl?.includes('vimeo.com');
-              
-              return (
-                <div
-                  key={`${testimonial.id}-${testimonial.position}`}
-                  className={`transition-all duration-500 ${
-                    testimonial.position === 0
-                      ? "scale-100 opacity-100 z-10"
-                      : "scale-75 opacity-50 hidden md:block"
-                  }`}
-                >
-                  <div className="bg-card rounded-2xl overflow-hidden shadow-2xl max-w-md">
-                    {/* Video Card */}
-                    <div className="relative aspect-video bg-muted">
-                      {isVideoPlaying && hasValidUrl ? (
-                        isYouTube ? (
-                          <iframe
-                            src={getYouTubeEmbedUrl(testimonial.videoUrl)}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            className="w-full h-full"
-                          />
-                        ) : isVimeo ? (
-                          <iframe
-                            src={getVimeoEmbedUrl(testimonial.videoUrl)}
-                            allow="autoplay; fullscreen; picture-in-picture"
-                            allowFullScreen
-                            className="w-full h-full"
-                          />
-                        ) : (
-                          <video
-                            key={testimonial.videoUrl}
-                            src={testimonial.videoUrl}
-                            controls
-                            autoPlay
-                            playsInline
-                            className="w-full h-full object-contain bg-black"
-                            onError={(e) => console.error('Video load error:', e)}
-                          />
+            {getVisibleCards().map((testimonial) => (
+              <div
+                key={`${testimonial.id}-${testimonial.position}`}
+                className={`transition-all duration-500 ${
+                  testimonial.position === 0
+                    ? "scale-100 opacity-100 z-10"
+                    : "scale-75 opacity-50 hidden md:block"
+                }`}
+              >
+                <div className="bg-card rounded-2xl overflow-hidden shadow-2xl max-w-md">
+                  {/* Video Thumbnail */}
+                  <div className="relative aspect-video">
+                    <img
+                      src={testimonial.thumbnail}
+                      alt={testimonial.serviceName}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 to-transparent" />
+                    <button
+                      onClick={() =>
+                        setIsPlaying(
+                          isPlaying === testimonial.id ? null : testimonial.id
                         )
-                      ) : (
-                        <>
-                          <div className="w-full h-full flex items-center justify-center">
-                            <Video className="w-16 h-16 text-muted-foreground/50" />
-                          </div>
-                          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 to-transparent" />
-                          <button
-                            onClick={() => setIsPlaying(testimonial.id)}
-                            className="absolute inset-0 flex items-center justify-center group"
-                            disabled={!hasValidUrl}
-                          >
-                            <div className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-transform group-hover:scale-110 ${hasValidUrl ? 'bg-primary' : 'bg-muted-foreground/50'}`}>
-                              <Play size={28} className="text-primary-foreground ml-1" />
-                            </div>
-                          </button>
-                          <span className="absolute top-4 left-4 px-3 py-1 bg-primary/90 text-primary-foreground text-xs font-medium rounded-full">
-                            {testimonial.serviceName}
-                          </span>
-                        </>
-                      )}
-                    </div>
+                      }
+                      className="absolute inset-0 flex items-center justify-center group"
+                    >
+                      <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                        <Play size={28} className="text-primary-foreground ml-1" />
+                      </div>
+                    </button>
+                    <span className="absolute top-4 left-4 px-3 py-1 bg-primary/90 text-primary-foreground text-xs font-medium rounded-full">
+                      {testimonial.serviceName}
+                    </span>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
 
           {/* Navigation */}
