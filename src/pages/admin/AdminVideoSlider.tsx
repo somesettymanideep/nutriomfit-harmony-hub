@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trash2, Plus, Video } from "lucide-react";
+import { Trash2, Plus, Video, Play } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -17,27 +17,31 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
-  getHomeVideoTestimonials,
-  addHomeVideoTestimonial,
-  deleteHomeVideoTestimonial,
-  HomeVideoTestimonial
-} from "@/lib/homeVideoTestimonialsStore";
+  getHomeVideos,
+  addHomeVideo,
+  deleteHomeVideo,
+  HomeVideo
+} from "@/lib/homeVideoSliderStore";
 
-const AdminHomeVideos = () => {
-  const [videos, setVideos] = useState<HomeVideoTestimonial[]>([]);
+const AdminVideoSlider = () => {
+  const [videos, setVideos] = useState<HomeVideo[]>([]);
+  const [title, setTitle] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState("");
-  const [serviceName, setServiceName] = useState("");
 
   useEffect(() => {
     refreshData();
   }, []);
 
   const refreshData = () => {
-    setVideos(getHomeVideoTestimonials());
+    setVideos(getHomeVideos());
   };
 
   const handleAddVideo = () => {
+    if (!title.trim()) {
+      toast.error("Please enter a video title");
+      return;
+    }
     if (!videoUrl.trim()) {
       toast.error("Please enter a video URL");
       return;
@@ -46,26 +50,22 @@ const AdminHomeVideos = () => {
       toast.error("Please enter a thumbnail URL");
       return;
     }
-    if (!serviceName.trim()) {
-      toast.error("Please enter a service name");
-      return;
-    }
 
-    addHomeVideoTestimonial({
+    addHomeVideo({
+      title: title.trim(),
       videoUrl: videoUrl.trim(),
-      thumbnail: thumbnailUrl.trim(),
-      serviceName: serviceName.trim()
+      thumbnail: thumbnailUrl.trim()
     });
 
+    setTitle("");
     setVideoUrl("");
     setThumbnailUrl("");
-    setServiceName("");
     refreshData();
     toast.success("Video added successfully");
   };
 
   const handleDelete = (id: string) => {
-    deleteHomeVideoTestimonial(id);
+    deleteHomeVideo(id);
     refreshData();
     toast.success("Video deleted successfully");
   };
@@ -73,8 +73,8 @@ const AdminHomeVideos = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-foreground mb-2">Home Video Testimonials</h1>
-        <p className="text-muted-foreground">Manage video testimonials displayed on the homepage</p>
+        <h1 className="text-2xl font-bold text-foreground mb-2">Home Video Slider</h1>
+        <p className="text-muted-foreground">Manage videos displayed in the homepage carousel</p>
       </div>
 
       {/* Add Video Form */}
@@ -88,21 +88,21 @@ const AdminHomeVideos = () => {
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="serviceName">Service Name</Label>
+              <Label htmlFor="title">Video Title</Label>
               <Input
-                id="serviceName"
-                value={serviceName}
-                onChange={(e) => setServiceName(e.target.value)}
-                placeholder="e.g., 90-Day Diet Program"
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="e.g., Morning Yoga Session"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="videoUrl">Video URL</Label>
+              <Label htmlFor="videoUrl">Video URL (YouTube/Vimeo embed)</Label>
               <Input
                 id="videoUrl"
                 value={videoUrl}
                 onChange={(e) => setVideoUrl(e.target.value)}
-                placeholder="https://..."
+                placeholder="https://www.youtube.com/embed/..."
               />
             </div>
             <div className="space-y-2">
@@ -142,18 +142,22 @@ const AdminHomeVideos = () => {
                   key={video.id}
                   className="relative group rounded-lg overflow-hidden border border-border"
                 >
-                  <div className="aspect-video">
+                  <div className="aspect-video relative">
                     <img
                       src={video.thumbnail}
-                      alt={video.serviceName}
+                      alt={video.title}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-primary/80 flex items-center justify-center">
+                        <Play className="w-5 h-5 text-primary-foreground ml-0.5" />
+                      </div>
+                    </div>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <span className="inline-block px-2 py-1 bg-primary/90 text-primary-foreground text-xs font-medium rounded">
-                      {video.serviceName}
-                    </span>
+                  <div className="p-3 bg-card">
+                    <h3 className="font-medium text-foreground truncate">{video.title}</h3>
+                    <p className="text-xs text-muted-foreground truncate mt-1">{video.videoUrl}</p>
                   </div>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
@@ -169,7 +173,7 @@ const AdminHomeVideos = () => {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Delete Video?</AlertDialogTitle>
                         <AlertDialogDescription>
-                          This will remove the video from the homepage testimonials section.
+                          This will remove "{video.title}" from the homepage video slider.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
@@ -190,4 +194,4 @@ const AdminHomeVideos = () => {
   );
 };
 
-export default AdminHomeVideos;
+export default AdminVideoSlider;
