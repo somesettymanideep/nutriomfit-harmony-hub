@@ -49,6 +49,8 @@ export const getHomeVideoTestimonials = (): HomeVideoTestimonial[] => {
 
 export const saveHomeVideoTestimonials = (testimonials: HomeVideoTestimonial[]) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(testimonials));
+  // Notify the UI (same-tab) to re-read localStorage
+  window.dispatchEvent(new Event('home-video-testimonials-updated'));
 };
 
 export const addHomeVideoTestimonial = (testimonial: Omit<HomeVideoTestimonial, 'id' | 'createdAt'>): HomeVideoTestimonial => {
