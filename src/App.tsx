@@ -24,6 +24,7 @@ import AdminSchedule from "./pages/admin/AdminSchedule";
 import AdminScheduleTwo from "./pages/admin/AdminScheduleTwo";
 import AdminServiceVideos from "./pages/admin/AdminServiceVideos";
 import AdminServiceImages from "./pages/admin/AdminServiceImages";
+import AdminHomeVideos from "./pages/admin/AdminHomeVideos";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => (
             <Route path="services" element={<AdminServices />} />
             <Route path="service-images" element={<AdminServiceImages />} />
             <Route path="videos" element={<AdminServiceVideos />} />
+            <Route path="home-videos" element={<AdminHomeVideos />} />
             <Route path="settings" element={<AdminSettings />} />
             <Route path="bookings" element={<AdminBookings />} />
             <Route path="schedule" element={<AdminSchedule />} />
