@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trash2, Plus, Video } from "lucide-react";
+import { Trash2, Plus, Video, Upload } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -27,6 +27,8 @@ const AdminHomeVideos = () => {
   const [videos, setVideos] = useState<HomeVideoTestimonial[]>([]);
   const [videoUrl, setVideoUrl] = useState("");
   const [serviceName, setServiceName] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     refreshData();
@@ -36,9 +38,21 @@ const AdminHomeVideos = () => {
     setVideos(getHomeVideoTestimonials());
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith('video/')) {
+        toast.error("Please select a video file");
+        return;
+      }
+      setSelectedFile(file);
+      setVideoUrl(""); // Clear URL when file is selected
+    }
+  };
+
   const handleAddVideo = () => {
-    if (!videoUrl.trim()) {
-      toast.error("Please enter a video URL");
+    if (!selectedFile && !videoUrl.trim()) {
+      toast.error("Please upload a video file or enter a video URL");
       return;
     }
     if (!serviceName.trim()) {
@@ -46,15 +60,39 @@ const AdminHomeVideos = () => {
       return;
     }
 
-    addHomeVideoTestimonial({
-      videoUrl: videoUrl.trim(),
-      serviceName: serviceName.trim()
-    });
+    let finalVideoUrl = videoUrl.trim();
 
-    setVideoUrl("");
-    setServiceName("");
-    refreshData();
-    toast.success("Video added successfully");
+    // If file is selected, convert to base64 data URL
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64Url = reader.result as string;
+        addHomeVideoTestimonial({
+          videoUrl: base64Url,
+          serviceName: serviceName.trim()
+        });
+        
+        setVideoUrl("");
+        setServiceName("");
+        setSelectedFile(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+        refreshData();
+        toast.success("Video added successfully");
+      };
+      reader.readAsDataURL(selectedFile);
+    } else {
+      addHomeVideoTestimonial({
+        videoUrl: finalVideoUrl,
+        serviceName: serviceName.trim()
+      });
+
+      setVideoUrl("");
+      setServiceName("");
+      refreshData();
+      toast.success("Video added successfully");
+    }
   };
 
   const handleDelete = (id: string) => {
@@ -79,26 +117,67 @@ const AdminHomeVideos = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="serviceName">Service Name</Label>
-              <Input
-                id="serviceName"
-                value={serviceName}
-                onChange={(e) => setServiceName(e.target.value)}
-                placeholder="e.g., 90-Day Diet Program"
+          <div className="space-y-2">
+            <Label htmlFor="serviceName">Service Name</Label>
+            <Input
+              id="serviceName"
+              value={serviceName}
+              onChange={(e) => setServiceName(e.target.value)}
+              placeholder="e.g., 90-Day Diet Program"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label>Upload Video File</Label>
+            <div className="flex items-center gap-4">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="video/*"
+                onChange={handleFileSelect}
+                className="hidden"
+                id="videoFile"
               />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="videoUrl">Video URL</Label>
-              <Input
-                id="videoUrl"
-                value={videoUrl}
-                onChange={(e) => setVideoUrl(e.target.value)}
-                placeholder="https://..."
-              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center gap-2"
+              >
+                <Upload className="w-4 h-4" />
+                Choose Video File
+              </Button>
+              {selectedFile && (
+                <span className="text-sm text-muted-foreground">
+                  {selectedFile.name}
+                </span>
+              )}
             </div>
           </div>
+
+          <div className="flex items-center gap-4">
+            <div className="h-px flex-1 bg-border" />
+            <span className="text-sm text-muted-foreground">OR</span>
+            <div className="h-px flex-1 bg-border" />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="videoUrl">Video URL</Label>
+            <Input
+              id="videoUrl"
+              value={videoUrl}
+              onChange={(e) => {
+                setVideoUrl(e.target.value);
+                setSelectedFile(null);
+                if (fileInputRef.current) {
+                  fileInputRef.current.value = "";
+                }
+              }}
+              placeholder="https://... (YouTube, Vimeo, or direct video URL)"
+              disabled={!!selectedFile}
+            />
+          </div>
+
           <Button onClick={handleAddVideo} className="w-full md:w-auto">
             <Plus className="w-4 h-4 mr-2" />
             Add Video
