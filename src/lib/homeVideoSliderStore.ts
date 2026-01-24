@@ -1,8 +1,7 @@
 export interface HomeVideo {
   id: string;
   videoUrl: string;
-  title: string;
-  thumbnail: string;
+  serviceName: string;
   createdAt: string;
 }
 
@@ -13,44 +12,7 @@ export const getHomeVideos = (): HomeVideo[] => {
   if (stored) {
     return JSON.parse(stored);
   }
-  // Default videos
-  return [
-    {
-      id: '1',
-      videoUrl: '#',
-      title: 'Yoga Session',
-      thumbnail: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600',
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: '2',
-      videoUrl: '#',
-      title: 'Fitness Training',
-      thumbnail: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600',
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: '3',
-      videoUrl: '#',
-      title: 'Diet Consultation',
-      thumbnail: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600',
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: '4',
-      videoUrl: '#',
-      title: 'Wellness Workshop',
-      thumbnail: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600',
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: '5',
-      videoUrl: '#',
-      title: 'Morning Routine',
-      thumbnail: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600',
-      createdAt: new Date().toISOString()
-    }
-  ];
+  return [];
 };
 
 export const saveHomeVideos = (videos: HomeVideo[]) => {
