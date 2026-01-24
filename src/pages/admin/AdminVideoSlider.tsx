@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trash2, Plus, Video, Play } from "lucide-react";
+import { Trash2, Plus, Video, Play, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -25,9 +25,8 @@ import {
 
 const AdminVideoSlider = () => {
   const [videos, setVideos] = useState<HomeVideo[]>([]);
-  const [title, setTitle] = useState("");
+  const [serviceName, setServiceName] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
-  const [thumbnailUrl, setThumbnailUrl] = useState("");
 
   useEffect(() => {
     refreshData();
@@ -38,28 +37,22 @@ const AdminVideoSlider = () => {
   };
 
   const handleAddVideo = () => {
-    if (!title.trim()) {
-      toast.error("Please enter a video title");
+    if (!serviceName.trim()) {
+      toast.error("Please enter a service name");
       return;
     }
     if (!videoUrl.trim()) {
       toast.error("Please enter a video URL");
       return;
     }
-    if (!thumbnailUrl.trim()) {
-      toast.error("Please enter a thumbnail URL");
-      return;
-    }
 
     addHomeVideo({
-      title: title.trim(),
-      videoUrl: videoUrl.trim(),
-      thumbnail: thumbnailUrl.trim()
+      serviceName: serviceName.trim(),
+      videoUrl: videoUrl.trim()
     });
 
-    setTitle("");
+    setServiceName("");
     setVideoUrl("");
-    setThumbnailUrl("");
     refreshData();
     toast.success("Video added successfully");
   };
@@ -86,32 +79,30 @@ const AdminVideoSlider = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="flex items-center gap-2 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+            <AlertCircle className="w-5 h-5 text-amber-500 flex-shrink-0" />
+            <p className="text-sm text-amber-600 dark:text-amber-400">
+              Video files should be under 25MB. Use direct video URLs (MP4, WebM, etc.) for best compatibility.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="title">Video Title</Label>
+              <Label htmlFor="serviceName">Service Name</Label>
               <Input
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g., Morning Yoga Session"
+                id="serviceName"
+                value={serviceName}
+                onChange={(e) => setServiceName(e.target.value)}
+                placeholder="e.g., Yoga, Fitness, Nutrition"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="videoUrl">Video URL (YouTube/Vimeo embed)</Label>
+              <Label htmlFor="videoUrl">Video URL</Label>
               <Input
                 id="videoUrl"
                 value={videoUrl}
                 onChange={(e) => setVideoUrl(e.target.value)}
-                placeholder="https://www.youtube.com/embed/..."
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="thumbnailUrl">Thumbnail URL</Label>
-              <Input
-                id="thumbnailUrl"
-                value={thumbnailUrl}
-                onChange={(e) => setThumbnailUrl(e.target.value)}
-                placeholder="https://..."
+                placeholder="https://example.com/video.mp4"
               />
             </div>
           </div>
@@ -142,11 +133,13 @@ const AdminVideoSlider = () => {
                   key={video.id}
                   className="relative group rounded-lg overflow-hidden border border-border"
                 >
-                  <div className="aspect-video relative">
-                    <img
-                      src={video.thumbnail}
-                      alt={video.title}
+                  <div className="aspect-video relative bg-muted">
+                    <video
+                      src={video.videoUrl}
                       className="w-full h-full object-cover"
+                      muted
+                      playsInline
+                      preload="metadata"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -156,7 +149,7 @@ const AdminVideoSlider = () => {
                     </div>
                   </div>
                   <div className="p-3 bg-card">
-                    <h3 className="font-medium text-foreground truncate">{video.title}</h3>
+                    <h3 className="font-medium text-foreground truncate">{video.serviceName}</h3>
                     <p className="text-xs text-muted-foreground truncate mt-1">{video.videoUrl}</p>
                   </div>
                   <AlertDialog>
@@ -173,7 +166,7 @@ const AdminVideoSlider = () => {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Delete Video?</AlertDialogTitle>
                         <AlertDialogDescription>
-                          This will remove "{video.title}" from the homepage video slider.
+                          This will remove "{video.serviceName}" video from the homepage video slider.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>

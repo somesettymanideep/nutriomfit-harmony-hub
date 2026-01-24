@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { Play, ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Play, X } from "lucide-react";
 import { getHomeVideos, HomeVideo } from "@/lib/homeVideoSliderStore";
 import {
   Carousel,
@@ -19,7 +18,7 @@ const VideoSliderSection = () => {
   }, []);
 
   const handlePlayVideo = (videoUrl: string) => {
-    if (videoUrl && videoUrl !== '#') {
+    if (videoUrl) {
       setPlayingVideo(videoUrl);
     }
   };
@@ -57,12 +56,14 @@ const VideoSliderSection = () => {
               {videos.map((video) => (
                 <CarouselItem key={video.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
                   <div className="bg-card rounded-2xl overflow-hidden shadow-xl group cursor-pointer transition-transform hover:scale-[1.02]">
-                    {/* Video Thumbnail */}
-                    <div className="relative aspect-video">
-                      <img
-                        src={video.thumbnail}
-                        alt={video.title}
+                    {/* Video Container */}
+                    <div className="relative aspect-video bg-charcoal">
+                      <video
+                        src={video.videoUrl}
                         className="w-full h-full object-cover"
+                        muted
+                        playsInline
+                        preload="metadata"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent" />
                       <button
@@ -74,10 +75,10 @@ const VideoSliderSection = () => {
                         </div>
                       </button>
                     </div>
-                    {/* Title */}
+                    {/* Service Name */}
                     <div className="p-4 bg-card">
                       <h3 className="text-foreground font-semibold text-center truncate">
-                        {video.title}
+                        {video.serviceName}
                       </h3>
                     </div>
                   </div>
@@ -99,15 +100,16 @@ const VideoSliderSection = () => {
           <div className="relative w-full max-w-4xl aspect-video">
             <button
               onClick={() => setPlayingVideo(null)}
-              className="absolute -top-10 right-0 text-white hover:text-primary transition-colors"
+              className="absolute -top-10 right-0 text-white hover:text-primary transition-colors flex items-center gap-1"
             >
-              Close ✕
+              Close <X size={20} />
             </button>
-            <iframe
+            <video
               src={playingVideo}
               className="w-full h-full rounded-lg"
-              allowFullScreen
-              allow="autoplay; encrypted-media"
+              controls
+              autoPlay
+              onClick={(e) => e.stopPropagation()}
             />
           </div>
         </div>
